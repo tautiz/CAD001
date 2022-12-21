@@ -1,4 +1,5 @@
 <?php
+
 $ceu = [
     "Italy" => "Rome",
     "Luxembourg" => "Luxembourg",
