@@ -89,12 +89,13 @@ function istrintiStudenta(int $id): void
 $studentai = gautiStudentus();
 echo 'Pries sukurima senas vidurkis: ' . skaiciuotiStudentuAmziausVidurki($studentai);
 
-sukurtiStudenta(['vardas' => 'Linas', 'pavarde' => 'Linutis', 'amzius' => 50]);
+sukurtiStudenta(['vardas' => 'ĄČĘĖĮŠŲŪ', 'pavarde' => 'Linutis', 'amzius' => 45]);
 
 $studentai = gautiStudentus();
 echo '<br>Su nauju studentu vidurkis: ' . skaiciuotiStudentuAmziausVidurki($studentai);
 
-//$paskutinisStudentas = gautiStudenta(count($studentai) - 1);
+$paskutinisStudentas = gautiStudenta(count($studentai) - 1);
+//printStudents([$paskutinisStudentas]);
 
 atnaujintiStudenta(0, ['vardas' => 'Rokas', 'pavarde' => 'Rokutis', 'amzius' => 99]);
 
