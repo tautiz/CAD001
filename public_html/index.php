@@ -28,5 +28,6 @@ $duomenuIsvedimas->isvestiAsmenis($asmenys);
 
 // BONUS: Metodas isvestiAsmenisPagalData($asmenys, $gmmd) turi atspausdinti asmenis pagal gimimo metus
 // BONUS: Metodas isvestiAsmenisLentele($asmenys) turi atspausdinti asmenis <table> HTML elemente
+echo '<hr>';
 $duomenuIsvedimas->isvestiAsmenisPagalData($asmenys, 1980);
 $duomenuIsvedimas->isvestiAsmenisLentele($asmenys);

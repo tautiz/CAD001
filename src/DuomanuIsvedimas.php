@@ -15,7 +15,7 @@ class DuomanuIsvedimas
     {
         /** @var Asmuo $asmuo */
         foreach ($asmenys as $asmuo) {
-            if ($asmuo->getGimimoData()->format('y') == $gmmd) {
+            if ($asmuo->getGimimoData()->format('Y') == $gmmd) {
                 echo 'Asmuo: '. $asmuo->getVardas() . ' Amžius: '. $asmuo->getAmzius().' metai<br>';
             }
         }
