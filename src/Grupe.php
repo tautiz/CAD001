@@ -2,7 +2,7 @@
 
 include_once '../src/Student.php';
 
-class Grup0e
+class Grupe
 {
     /**
      * @param int $id

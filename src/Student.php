@@ -1,9 +1,14 @@
 <?php
 
-include_once 'Grupe.php';
+require_once 'Grupe.php';
+require_once 'Person.php';
+require_once 'GaliMokytis.php';
+require_once 'Lytis.php';
 
-class Student
+class Student extends Person implements GaliMokytis
 {
+    use Lytis;
+
     /**
      * @param int $id
      * @param string $vardas
@@ -12,49 +17,18 @@ class Student
      * @param Grupe|null $grupe
      */
     public function __construct(
-        private int $id,
-        private string $vardas,
-        private string $pavarde,
-        private int $asmensKodas,
+        int $id,
+        string $vardas,
+        string $pavarde,
+        int $asmensKodas,
         private Grupe|null $grupe = null
     ) {
+        parent::__construct($id, $vardas, $pavarde, $asmensKodas);
     }
 
     public function getGrupe(): Grupe|null
     {
         return $this->grupe;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVardas(): string
-    {
-        return $this->vardas;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPavarde(): string
-    {
-        return $this->pavarde;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAsmensKodas(): int
-    {
-        return $this->asmensKodas;
     }
 
     public function priskirtiGrupe(Grupe $grupe): void
@@ -63,39 +37,8 @@ class Student
         $grupe->pridetiStudenta();
     }
 
-    public function getGimimoData(): DateTime
+    public function mokytis(Dalykas $dalykas): void
     {
-        $milenium = $this->gautiTukstantmeti();
-        $gimimoMetai = $milenium + substr($this->asmensKodas, 1, 2);
-        $gimimoMenuo = substr($this->asmensKodas, 3, 2);
-        $gimimoDiena = substr($this->asmensKodas, 5, 2);
-        $gimimoData = new DateTime();
-        $gimimoData->setDate($gimimoMetai, $gimimoMenuo, $gimimoDiena);
-        return $gimimoData;
-    }
-
-    /**
-     * @return int
-     */
-    public function gautiTukstantmeti(): int
-    {
-        if (in_array(substr($this->asmensKodas, 0, 1), [5,6])) {
-            $milenium = 2000;
-        } else {
-            $milenium = 1900;
-        }
-
-        return $milenium;
-    }
-
-    public function getLytis(): string|null
-    {
-        if(in_array(substr($this->getAsmensKodas(), 0, 1), [3,5])) {
-            return 'Vyras';
-        } elseif (in_array(substr($this->getAsmensKodas(), 0, 1), [4,6])) {
-            return 'Moteris';
-        } else {
-            return null;
-        }
+        echo "Aš {$this->getVardas()} {$this->getPavarde()} mokausi {$dalykas->getPavadinimas()}";
     }
 }

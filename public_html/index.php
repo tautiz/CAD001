@@ -1,6 +1,8 @@
 <?php
 
 include_once '../src/Student.php';
+include_once '../src/Teacher.php';
+include_once '../src/Dalykas.php';
 
 $studentai = [
     ['vardas' => 'Jonas', 'pavarde' => 'Jonaitis', 'asmensKodas' => 38304056789],
@@ -37,6 +39,19 @@ foreach ($studentaiObjektai as $studentas) {
     $grupe = $grupesObjektai[rand(0, 4)];
     $studentas->priskirtiGrupe($grupe);
 }
+
+$mokytojas = new Teacher(1, 'Mokytojas', 'Mokytojo', 38706054321);
+$mokytojas->addGrupe($grupesObjektai[0]);
+$mokytojas->addGrupe($grupesObjektai[2]);
+$mokytojas->addGrupe($grupesObjektai[4]);
+
+$mokytojas2 = new Teacher(2, 'Mokytojas2', 'Mokytojo2', 38706054321);
+$mokytojas2->addGrupe($grupesObjektai[1]);
+$mokytojas2->addGrupe($grupesObjektai[3]);
+$mokytojas2->addGrupe($grupesObjektai[2]);
+
+spausdintiMokytoja($mokytojas);
+spausdintiMokytoja($mokytojas2);
 
 spausdintiPagalLyti($studentaiObjektai);
 spausdintiVyriausia($studentaiObjektai);
@@ -99,3 +114,22 @@ function spausdintiPagalLyti(array $studentaiObjektai): void
     spausdintiStudentus($moteris, 'li');
     echo '</ul>';
 }
+
+function spausdintiMokytoja(Teacher $teacher): void
+{
+    echo 'Mokytojas: ' . $teacher->getVardas() . ' ' . $teacher->getPavarde() . ' ' . $teacher->getAsmensKodas() . '<br>';
+    echo 'Mokytojo grupės: <ul>';
+    foreach ($teacher->getGrupes() as $grupe) {
+        echo '<li>' . $grupe->getPavadinimas() . ' ' . $grupe->getAdresas() . '</li>';
+    }
+    echo '</ul>';
+}
+
+echo '<hr>';
+
+$dalykas = new Dalykas('Programavimas');
+$studentas = $studentaiObjektai[0];
+$studentas->mokytis($dalykas);
+echo '<br>';
+$mokytojas->mokyti($studentas);
+
