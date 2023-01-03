@@ -1,6 +1,6 @@
 <?php
 
-namespace SqrtApp\IO;
+namespace SqrtApp\IO\cli;
 
 class Input
 {

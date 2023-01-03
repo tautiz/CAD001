@@ -3,7 +3,7 @@
 namespace SqrtApp;
 
 use SqrtApp\Calculate\Calculator;
-use SqrtApp\IO\Input;
+use SqrtApp\IO\cli\Input;
 use SqrtApp\IO\Output;
 
 class Main
