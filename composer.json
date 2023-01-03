@@ -1,0 +1,11 @@
+{
+    "name": "tautiz/portfolio",
+    "type": "project",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Appsas\\": "src\\",
+            "SqrtApp\\": "public_html\\uzduotys\\sqrt\\"
+        }
+    }
+}

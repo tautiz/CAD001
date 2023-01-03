@@ -1,8 +1,11 @@
 <?php
 
-include_once '../src/Student.php';
-include_once '../src/Teacher.php';
-include_once '../src/Dalykas.php';
+use Appsas\Dalykas;
+use Appsas\Grupe;
+use Appsas\Student;
+use Appsas\Teacher;
+
+require __DIR__ . '/../vendor/autoload.php';
 
 $studentai = [
     ['vardas' => 'Jonas', 'pavarde' => 'Jonaitis', 'asmensKodas' => 38304056789],

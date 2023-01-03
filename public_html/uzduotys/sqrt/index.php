@@ -1,11 +1,5 @@
 <?php
 
-use SqrtApp\Main;
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
-include 'Main.php';
-include 'IO/cli/Input.php';
-include 'IO/hard/Input.php';
-include 'IO/Output.php';
-include 'Calculate/Calculator.php';
-
-Main::run();
+SqrtApp\Main::run();

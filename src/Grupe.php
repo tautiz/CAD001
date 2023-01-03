@@ -1,6 +1,6 @@
 <?php
 
-include_once '../src/Student.php';
+namespace Appsas;
 
 class Grupe
 {

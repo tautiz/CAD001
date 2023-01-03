@@ -1,9 +1,12 @@
 <?php
 
-require_once 'Grupe.php';
-require_once 'Person.php';
-require_once 'GaliMokytis.php';
-require_once 'Lytis.php';
+namespace Appsas;
+
+use Appsas\GaliMokytis;
+use Appsas\Grupe;
+use Appsas\Lytis;
+use Appsas\Person;
+use Appsas\Dalykas;
 
 class Student extends Person implements GaliMokytis
 {

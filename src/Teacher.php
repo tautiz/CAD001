@@ -1,7 +1,6 @@
 <?php
 
-require_once 'GaliMokyti.php';
-require_once 'Lytis.php';
+namespace Appsas;
 
 class Teacher extends Person implements GaliMokyti
 {
