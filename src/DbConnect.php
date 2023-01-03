@@ -1,6 +1,6 @@
 <?php
 
-namespace KCS;
+namespace Appsas;
 
 use PDO;
 use PDOException;

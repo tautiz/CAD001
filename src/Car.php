@@ -1,4 +1,5 @@
 <?php
+namespace Appsas;
 
 class Car
 {
