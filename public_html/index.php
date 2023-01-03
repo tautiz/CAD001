@@ -132,4 +132,3 @@ $studentas = $studentaiObjektai[0];
 $studentas->mokytis($dalykas);
 echo '<br>';
 $mokytojas->mokyti($studentas);
-
