@@ -2,7 +2,8 @@
     "name": "tautiz/portfolio",
     "type": "project",
     "require": {
-        "monolog/monolog": "2.8.0"
+        "monolog/monolog": "2.8.0",
+      "ext-dom": "*"
     },
     "autoload": {
         "psr-4": {
