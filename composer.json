@@ -1,7 +1,9 @@
 {
     "name": "tautiz/portfolio",
     "type": "project",
-    "require": {},
+    "require": {
+        "monolog/monolog": "2.8.0"
+    },
     "autoload": {
         "psr-4": {
             "Appsas\\": "src\\",
