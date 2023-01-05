@@ -1,5 +1,6 @@
 <?php
 
+use Appsas\Authenticator;
 use Appsas\FS;
 use Appsas\Output;
 use Monolog\Logger;
@@ -20,25 +21,20 @@ try {
     $password = $_POST['password'] ?? null;
 
     // Vieta kur atloginam vartotoja
-    if($_GET['logout'] ?? false) {
+    if ($_GET['logout'] ?? false) {
         $_SESSION['logged'] = false;
     }
 
     // Jei vartotojas prisijunges, tai setinam SESIJA i prisijunges
     // ir Pasisveikinam su lankytoju
-    if (
-        isset($_SESSION['logged']) && $_SESSION['logged'] === true
-        ||
-        ($userName === 'admin' && $password === 'slapta')
-       ||
-        ($userName === 'tautiz' && $password === 'pass')
-    ) {
+    $authenticator = new Authenticator();
+    if ($authenticator->authenticate($userName, $password)) {
         $_SESSION['logged'] = true;
         $_SESSION['username'] = $userName ?? $_SESSION['username'];
-
         $render = new HtmlRender($output);
         $render->render();
     }
+
     // Jei vartotojas neprisijunges, tai rodom prisijungimo forma.
     // Ir jei vartotojas ivede blogus prisijungimus, informuojam ji
     else {
