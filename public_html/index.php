@@ -4,6 +4,7 @@ use Appsas\FS;
 use Appsas\Output;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Appsas\HtmlRender;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -18,7 +19,7 @@ try {
     $userName = $_POST['username'] ?? null;
     $password = $_POST['password'] ?? null;
 
-    // Vieta kur atliginam vartotoja
+    // Vieta kur atloginam vartotoja
     if($_GET['logout'] ?? false) {
         $_SESSION['logged'] = false;
     }
@@ -29,12 +30,14 @@ try {
         isset($_SESSION['logged']) && $_SESSION['logged'] === true
         ||
         ($userName === 'admin' && $password === 'slapta')
+       ||
+        ($userName === 'tautiz' && $password === 'pass')
     ) {
         $_SESSION['logged'] = true;
+        $_SESSION['username'] = $userName ?? $_SESSION['username'];
 
-// UZDUOTIS: Kazka padaryti kad cia paimtu ir surenderintu Dashboard.html faila
-
-//        $output->store('Sveiki prisijungę<br><a href="index.php?logout=true">Atsijungti</a><br>');
+        $render = new HtmlRender($output);
+        $render->render();
     }
     // Jei vartotojas neprisijunges, tai rodom prisijungimo forma.
     // Ir jei vartotojas ivede blogus prisijungimus, informuojam ji
