@@ -2,6 +2,8 @@
 
 namespace Appsas;
 
+use Appsas\Exceptions\UnauthenticatedException;
+
 class Authenticator
 {
     public function authenticate(string|null $userName, string|null $password): bool
@@ -21,6 +23,7 @@ class Authenticator
      * @param string $checkUser
      * @param string $checkPass
      * @return bool
+     * @throws UnauthenticatedException
      */
     public function login(string $checkUser, string $checkPass): bool
     {
@@ -35,6 +38,6 @@ class Authenticator
             }
         }
 
-        return false;
+        throw new UnauthenticatedException();
     }
 }

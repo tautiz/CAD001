@@ -1,6 +1,7 @@
 <?php
 
 use Appsas\Authenticator;
+use Appsas\Exceptions\UnauthenticatedException;
 use Appsas\FS;
 use Appsas\Output;
 use Monolog\Logger;
@@ -42,12 +43,10 @@ try {
         $failoSistema = new FS('../src/html/pradzia.html');
         $failoTurinys = $failoSistema->getFailoTurinys();
         $output->store($failoTurinys);
-
-        // Tikrinam ar vartotojas ivede prisijungimo duomenis
-        if ($userName !== null && $password !== null) {
-            $output->store('Neteisingi prisijungimo duomenys');
-        }
     }
+} catch (UnauthenticatedException $e) {
+    $output->store('Neteisingi prisijungimo duomenys');
+    $log->warning($e->getMessage());
 } catch (Exception $e) {
     $output->store('Oi nutiko klaida! Bandyk vėliau dar karta.');
     $log->error($e->getMessage());
