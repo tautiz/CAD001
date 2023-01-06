@@ -42,4 +42,11 @@ class Authenticator
 
         throw new UnauthenticatedException();
     }
+    //TODO: sukurti logout Metoda --------------------------------------------------------------------------------
+    // Vieta kur atloginam vartotoja
+//    if ($_GET['logout'] ?? false) {
+//        $_SESSION['logged'] = false;
+//        $_SESSION['username'] = null;
+//    }
+    //--------------------------------------------------------------------------------
 }

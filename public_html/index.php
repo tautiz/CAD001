@@ -1,15 +1,19 @@
 <?php
 
 use Appsas\Authenticator;
+use Appsas\Controllers\AdminController;
+use Appsas\Controllers\PradziaController;
 use Appsas\Exceptions\MissingVariableException;
 use Appsas\Exceptions\UnauthenticatedException;
 use Appsas\FS;
 use Appsas\Output;
+use Appsas\Router;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Appsas\HtmlRender;
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . "/../vendor/larapack/dd/src/helper.php";
 
 $log = new Logger('Portfolios');
 $log->pushHandler(new StreamHandler('../logs/klaidos.log', Logger::WARNING));
@@ -19,29 +23,18 @@ $output = new Output();
 try {
     session_start();
 
-    $userName = $_POST['username'] ?? null;
-    $password = $_POST['password'] ?? null;
+//    // Autentifikuojam vartotoja, tikrinam jo prisijungimo busena
+//    $authenticator = new Authenticator();
+//    $authenticator->authenticate($_POST['username'] ?? null, $_POST['password'] ?? null);
 
-    // Vieta kur atloginam vartotoja
-    if ($_GET['logout'] ?? false) {
-        $_SESSION['logged'] = false;
-        $_SESSION['username'] = null;
-    }
+    $router = new Router();
+    $router->addRoute('GET', '', [new PradziaController(), 'index']);
+    $router->addRoute('GET', 'admin', [new AdminController(), 'index']);
+    $router->run();
 
-    // Autentifikuojam vartotoja, tikrinam jo prisijungimo busena
-    $authenticator = new Authenticator();
-    if ($authenticator->authenticate($userName, $password)) {
-        $render = new HtmlRender($output);
-        $render->render();
-    }
-
-    // Jei vartotojas neprisijunges, tai rodom prisijungimo forma.
-    else {
-        // Nuskaitomas HTML failas ir siunciam jo teksta i Output klase
-        $failoSistema = new FS('../src/html/pradzia.html');
-        $failoTurinys = $failoSistema->getFailoTurinys();
-        $output->store($failoTurinys);
-    }
+} catch (\Appsas\Exceptions\PageNotFoundException $e) {
+    $output->store('Neradau puslapio');
+    $log->warning($e->getMessage());
 } catch (UnauthenticatedException $e) {
     $output->store('Neteisingi prisijungimo duomenys');
     $log->warning($e->getMessage());
