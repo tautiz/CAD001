@@ -25,10 +25,10 @@ try {
     // Vieta kur atloginam vartotoja
     if ($_GET['logout'] ?? false) {
         $_SESSION['logged'] = false;
+        $_SESSION['username'] = null;
     }
 
-    // Jei vartotojas prisijunges, tai setinam SESIJA i prisijunges
-    // ir Pasisveikinam su lankytoju
+    // Autentifikuojam vartotoja, tikrinam jo prisijungimo busena
     $authenticator = new Authenticator();
     if ($authenticator->authenticate($userName, $password)) {
         $render = new HtmlRender($output);
@@ -36,7 +36,6 @@ try {
     }
 
     // Jei vartotojas neprisijunges, tai rodom prisijungimo forma.
-    // Ir jei vartotojas ivede blogus prisijungimus, informuojam ji
     else {
         // Nuskaitomas HTML failas ir siunciam jo teksta i Output klase
         $failoSistema = new FS('../src/html/pradzia.html');
