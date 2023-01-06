@@ -2,15 +2,15 @@
 
 use Appsas\Authenticator;
 use Appsas\Controllers\AdminController;
+use Appsas\Controllers\KontaktaiController;
+use Appsas\Controllers\PortfolioController;
 use Appsas\Controllers\PradziaController;
 use Appsas\Exceptions\MissingVariableException;
 use Appsas\Exceptions\UnauthenticatedException;
-use Appsas\FS;
 use Appsas\Output;
 use Appsas\Router;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Appsas\HtmlRender;
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . "/../vendor/larapack/dd/src/helper.php";
@@ -30,6 +30,8 @@ try {
     $router = new Router();
     $router->addRoute('GET', '', [new PradziaController(), 'index']);
     $router->addRoute('GET', 'admin', [new AdminController(), 'index']);
+    $router->addRoute('GET', 'kontaktai', [new KontaktaiController(), 'index']);
+    $router->addRoute('GET', 'portfolio', [new PortfolioController(), 'index']);
     $router->run();
 
 } catch (\Appsas\Exceptions\PageNotFoundException $e) {
