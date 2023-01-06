@@ -1,6 +1,7 @@
 <?php
 
 use Appsas\Authenticator;
+use Appsas\Exceptions\MissingVariableException;
 use Appsas\Exceptions\UnauthenticatedException;
 use Appsas\FS;
 use Appsas\Output;
@@ -30,8 +31,6 @@ try {
     // ir Pasisveikinam su lankytoju
     $authenticator = new Authenticator();
     if ($authenticator->authenticate($userName, $password)) {
-        $_SESSION['logged'] = true;
-        $_SESSION['username'] = $userName ?? $_SESSION['username'];
         $render = new HtmlRender($output);
         $render->render();
     }
@@ -46,6 +45,9 @@ try {
     }
 } catch (UnauthenticatedException $e) {
     $output->store('Neteisingi prisijungimo duomenys');
+    $log->warning($e->getMessage());
+} catch (MissingVariableException $e) {
+    $output->store('Kilo klaida templeite.');
     $log->warning($e->getMessage());
 } catch (Exception $e) {
     $output->store('Oi nutiko klaida! Bandyk vėliau dar karta.');
