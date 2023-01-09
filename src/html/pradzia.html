@@ -11,7 +11,8 @@
 </head>
 <body>
     <h1>Sveiki apsilanke mano puslapyje</h1>
-    <form action="/" method="post">
+    <div class="message">{{message}}</div>
+    <form action="/login" method="post">
         <input type="text" name="username" placeholder="Iveskite savo prisijungimo varda">
         <input type="password" name="password" placeholder="Nurodykite slaptazodi">
         <input type="submit" value="Siusti">

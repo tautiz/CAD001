@@ -6,9 +6,14 @@ use Appsas\Exceptions\UnauthenticatedException;
 
 class Authenticator
 {
-    public function authenticate(string|null $userName, string|null $password): bool
+    /**
+     * @throws UnauthenticatedException
+     */
+    public function authenticate(): void
     {
-        return $this->isLoggedIn() || !empty($userName) && !empty($password) && $this->login($userName, $password);
+        if ($this->isLoggedIn()) {
+            return;
+        }
     }
 
     /**
@@ -42,11 +47,16 @@ class Authenticator
 
         throw new UnauthenticatedException();
     }
-    //TODO: sukurti logout Metoda --------------------------------------------------------------------------------
-    // Vieta kur atloginam vartotoja
-//    if ($_GET['logout'] ?? false) {
-//        $_SESSION['logged'] = false;
-//        $_SESSION['username'] = null;
-//    }
-    //--------------------------------------------------------------------------------
+
+    public function logout(): void
+    {
+        // Vieta kur atjungiam lakytoja ir sunaikinam jo sesija
+        if ($_GET['logout'] ?? false) {
+            $_SESSION['logged'] = false;
+            $_SESSION['username'] = null;
+            session_destroy();
+            header('Location: /');
+            exit();
+        }
+    }
 }
