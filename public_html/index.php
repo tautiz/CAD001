@@ -15,7 +15,7 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../vendor/larapack/dd/src/helper.php';
 
 $log = new Logger('Portfolios');
-$log->pushHandler(new StreamHandler('../logs/klaidos.log', Logger::WARNING));
+$log->pushHandler(new StreamHandler('../logs/klaidos.log', Logger::INFO));
 
 $output = new Output();
 
@@ -24,12 +24,13 @@ try {
 
     $authenticator = new Authenticator();
     $adminController = new AdminController($authenticator);
+    $kontaktaiController = new KontaktaiController($log);
 
     $router = new Router();
     $router->addRoute('GET', '', [new PradziaController(), 'index']);
     $router->addRoute('GET', 'admin', [$adminController, 'index']);
     $router->addRoute('POST', 'login', [$adminController, 'login']);
-    $router->addRoute('GET', 'kontaktai', [new KontaktaiController(), 'index']);
+    $router->addRoute('GET', 'kontaktai', [$kontaktaiController, 'index']);
     $router->addRoute('GET', 'portfolio', [new PortfolioController(), 'index']);
     $router->addRoute('GET', 'logout', [$adminController, 'logout']);
     $router->run();

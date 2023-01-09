@@ -9,7 +9,7 @@ use Appsas\HtmlRender;
 class AdminController
 {
     private Authenticator $authenticator;
-
+    // BAD PRACTICE: DI metu priskirti numatytasias (Default) reiksmes
     public function __construct(Authenticator $authenticator = null)
     {
         $this->authenticator = $authenticator ?? new Authenticator();
