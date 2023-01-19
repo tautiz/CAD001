@@ -3,7 +3,7 @@
 use Appsas\Authenticator;
 use Appsas\Controllers\AdminController;
 use Appsas\Controllers\KontaktaiController;
-use Appsas\Controllers\PortfolioController;
+use Appsas\Controllers\PersonController;
 use Appsas\Controllers\PradziaController;
 use Appsas\ExceptionHandler;
 use Appsas\Output;
@@ -31,8 +31,10 @@ try {
     $router->addRoute('GET', 'admin', [$adminController, 'index']);
     $router->addRoute('POST', 'login', [$adminController, 'login']);
     $router->addRoute('GET', 'kontaktai', [$kontaktaiController, 'index']);
-    $router->addRoute('GET', 'portfolio', [new PortfolioController(), 'index']);
-    $router->addRoute('POST', 'portfolio', [new PortfolioController(), 'store']);
+    $router->addRoute('GET', 'persons', [new PersonController(), 'index']);
+    $router->addRoute('GET', 'person/new', [new PersonController(), 'new']);
+    $router->addRoute('GET', 'person/delete', [new PersonController(), 'delete']);
+    $router->addRoute('POST', 'persons', [new PersonController(), 'store']);
     $router->addRoute('GET', 'logout', [$adminController, 'logout']);
     $router->run();
 }

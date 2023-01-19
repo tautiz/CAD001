@@ -29,4 +29,11 @@ class Validator
             throw new ValidatorException('Netinkamas asmens kodas');
         }
     }
+
+    public static function min(int $kuris, int $min)
+    {
+        if($kuris < $min) {
+            throw new ValidatorException('Per mazas skaitmuo. Reikalaujamas dydis min. ' . $min);
+        }
+    }
 }
