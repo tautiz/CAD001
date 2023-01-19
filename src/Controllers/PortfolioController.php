@@ -2,10 +2,13 @@
 
 namespace Appsas\Controllers;
 
+use Appsas\Database;
 use Appsas\FS;
+use Appsas\Validator;
 use Exception;
 use PDO;
 use Appsas\Configs;
+use PDOException;
 
 class PortfolioController
 {
@@ -21,40 +24,27 @@ class PortfolioController
     {
         $vardas = $_POST['vardas'] ?? '';
         $pavarde = $_POST['pavarde'] ?? '';
+        $kodas = (int)$_POST['kodas'] ?? '';
 
-        $kodas = !empty($_POST['kodas']) ? (int)$_POST['kodas'] != 0 ? (int)$_POST['kodas'] : '' : '';
-//
-//
-//        if (!empty($_POST['kodas'])) {
-//            $kodas = (int)$_POST['kodas'];
-//            if ($kodas == 0) {
-//                $kodas = '';
-//            }
-//        }
+        Validator::required($vardas);
+        Validator::required($pavarde);
+        Validator::required($kodas);
+        Validator::numeric($kodas);
+        Validator::asmensKodas($kodas);
 
-
-d($vardas, $pavarde, $kodas);
         $conf = new Configs();
-        $servername = $conf->configs['db']['hostmane'];
-        $dbname = $conf->configs['db']['dbname'];
-        $username = $conf->configs['db']['username'];
-        $password = $conf->configs['db']['password'];
+        $conn = new Database($conf);
 
-        if (!$vardas || !$pavarde || !$kodas) {
-            throw new Exception('Neuzpildyti visi laukai');
-        }
+        $conn->query(
+            "INSERT INTO `persons` (`first_name`, `last_name`, `code`)
+                    VALUES (:vardas, :pavarde, :kodas)",
+            [
+                'vardas' => $vardas,
+                'pavarde' => $pavarde,
+                'kodas' => $kodas,
+            ]
+        );
 
-        if (!is_numeric($kodas)) {
-            throw new Exception('Kodas turi buti skaicius');
-        }
-
-        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        // set the PDO error mode to exception
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $sql = "INSERT INTO `persons` (`first_name`, `last_name`, `code`) VALUES ('$vardas', '$pavarde', $kodas)";
-        // use exec() because no results are returned
-        $conn->exec($sql);
         echo "New record created successfully";
     }
 }
