@@ -32,6 +32,7 @@ try {
     $router->addRoute('POST', 'login', [$adminController, 'login']);
     $router->addRoute('GET', 'kontaktai', [$kontaktaiController, 'index']);
     $router->addRoute('GET', 'portfolio', [new PortfolioController(), 'index']);
+    $router->addRoute('POST', 'portfolio', [new PortfolioController(), 'index']);
     $router->addRoute('GET', 'logout', [$adminController, 'logout']);
     $router->run();
 }

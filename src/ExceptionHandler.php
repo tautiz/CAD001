@@ -20,6 +20,7 @@ class ExceptionHandler
             PageNotFoundException::class => $this->handlePageNotFoundException($e),
             UnauthenticatedException::class => $this->handleUnauthenticatedException($e),
             MissingVariableException::class => $this->handleMissingVariableException($e),
+            \PDOException::class => $this->handlePDOException($e),
             default => $this->handleDefaultException($e),
         };
     }
@@ -47,5 +48,11 @@ class ExceptionHandler
     {
         $this->output->store('Kilo klaida templeite.');
         $this->log->notice($e->getMessage());
+    }
+
+    private function handlePDOException(\PDOException $e)
+    {
+        $this->output->store('Kilo klaida duombazeje.');
+        $this->log->error($e->getMessage());
     }
 }
