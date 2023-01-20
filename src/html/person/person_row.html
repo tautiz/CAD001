@@ -1,0 +1,26 @@
+<tr>
+    <td>{{id}}</td>
+    <td>{{first_name}}</td>
+    <td>{{last_name}}</td>
+    <td>{{email}}</td>
+    <td>{{code}}</td>
+    <td>{{phone}}</td>
+    <td><span class="address_overflow tooltipped" data-tooltip="{{address}}">{{address}}</span></td>
+    <td>
+        <a href="/person/edit?id={{id}}"
+           data-tooltip="Redaguoti"
+           class="tooltipped waves-effect waves-light green btn-small">
+            <i class="tiny material-icons">edit</i>
+        </a>
+        <a href="/person/delete?id={{id}}"
+           data-tooltip="Šalinti"
+           class="tooltipped waves-effect waves-light red btn-small">
+            <i class="tiny material-icons">delete</i>
+        </a>
+        <a href="/person/show?id={{id}}"
+           data-tooltip="Peržiūrėti"
+           class="tooltipped waves-effect waves-light btn-small">
+            <i class="tiny material-icons">pageview</i>
+        </a>
+    </td>
+</tr>

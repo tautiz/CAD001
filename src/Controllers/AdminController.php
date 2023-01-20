@@ -6,7 +6,7 @@ use Appsas\Authenticator;
 use Appsas\Exceptions\UnauthenticatedException;
 use Appsas\HtmlRender;
 
-class AdminController
+class AdminController extends BaseController
 {
     private Authenticator $authenticator;
     // BAD PRACTICE: DI metu priskirti numatytasias (Default) reiksmes

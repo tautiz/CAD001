@@ -5,7 +5,7 @@ namespace Appsas\Controllers;
 use Appsas\FS;
 use Monolog\Logger;
 
-class KontaktaiController
+class KontaktaiController extends BaseController
 {
     private Logger $log;
 

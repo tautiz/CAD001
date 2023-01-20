@@ -1,0 +1,13 @@
+<h1>Person</h1>
+<span>Redagavimo forma</span>
+<form action="/person/update" method="post">
+    <input type="hidden" name="id" value="{{id}}"><br>
+    <input type="text" name="vardas" placeholder="Name" value="{{first_name}}"><br>
+    <input type="text" name="pavarde" placeholder="Surname" value="{{last_name}}"><br>
+    <input type="email" name="email" placeholder="El.paštas" value="{{email}}"><br>
+    <input type="text" name="kodas" placeholder="Asmens kodas" value="{{code}}"><br>
+    <input type="text" name="tel" placeholder="Tel. Nr." value="{{phone}}"><br>
+    <input type="text" name="addr_id" placeholder="Adreso ID" value="{{address_id}}">
+    <hr>
+    <input type="submit" class="waves-effect waves-light btn" value="Atnaujinti">
+</form>

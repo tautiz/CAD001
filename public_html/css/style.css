@@ -1,0 +1,7 @@
+.address_overflow {
+    white-space: nowrap;
+    width: 150px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

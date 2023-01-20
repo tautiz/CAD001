@@ -20,10 +20,20 @@ class Router
         $this->routes[$method][$url] = $controllerData;
     }
 
+    public function get(string $url, array $controllerData): void
+    {
+        $this->addRoute('GET', $url, $controllerData);
+    }
+
+    public function post(string $url, array $controllerData): void
+    {
+        $this->addRoute('POST', $url, $controllerData);
+    }
+
     /**
      * @throws PageNotFoundException
      */
-    public function run():void
+    public function run(): void
     {
         // Iš $_SERVER paimame užklausos metodą ir URL adresą
         $method = $_SERVER['REQUEST_METHOD'];
@@ -44,7 +54,19 @@ class Router
             throw new PageNotFoundException("Adresas: [$method] /$url nerastas");
         }
 
-        // Spausinam $response kuris gautas iš Controllerio atitinkamo metodo
-        echo $response;
+        // Iš kontrolerio funkcijos gautą atsakymą talpiname į main.html layout failą
+        $failoSistema = new FS('../src/html/layout/main.html');
+        $failoTurinys = $failoSistema->getFailoTurinys();
+        $title = $controller::TITLE;
+        $failoTurinys = str_replace("{{title}}", $title, $failoTurinys);
+        $failoTurinys = str_replace("{{content}}", $response, $failoTurinys);
+
+        // Išvalomi Templeituose likę {{}} tagai
+        preg_match_all('/{{(.*?)}}/', $failoTurinys, $matches);
+        foreach ($matches[0] as $key) {
+            $failoTurinys = str_replace($key, '', $failoTurinys);
+        }
+
+        echo $failoTurinys;
     }
 }

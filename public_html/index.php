@@ -25,17 +25,21 @@ try {
     $authenticator = new Authenticator();
     $adminController = new AdminController($authenticator);
     $kontaktaiController = new KontaktaiController($log);
+    $personController = new PersonController();
 
     $router = new Router();
     $router->addRoute('GET', '', [new PradziaController(), 'index']);
     $router->addRoute('GET', 'admin', [$adminController, 'index']);
     $router->addRoute('POST', 'login', [$adminController, 'login']);
-    $router->addRoute('GET', 'kontaktai', [$kontaktaiController, 'index']);
-    $router->addRoute('GET', 'persons', [new PersonController(), 'index']);
-    $router->addRoute('GET', 'person/new', [new PersonController(), 'new']);
-    $router->addRoute('GET', 'person/delete', [new PersonController(), 'delete']);
-    $router->addRoute('POST', 'persons', [new PersonController(), 'store']);
     $router->addRoute('GET', 'logout', [$adminController, 'logout']);
+    $router->addRoute('GET', 'kontaktai', [$kontaktaiController, 'index']);
+    $router->addRoute('GET', 'persons', [$personController, 'list']);
+    $router->addRoute('GET', 'person/new', [$personController, 'new']);
+    $router->addRoute('GET', 'person/delete', [$personController, 'delete']);
+    $router->addRoute('GET', 'person/edit', [$personController, 'edit']);
+    $router->addRoute('GET', 'person/show', [$personController, 'show']);
+    $router->addRoute('POST', 'person', [$personController, 'store']);
+    $router->addRoute('POST', 'person/update', [$personController, 'update']);
     $router->run();
 }
 catch (Exception $e) {

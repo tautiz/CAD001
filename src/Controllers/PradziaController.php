@@ -4,7 +4,7 @@ namespace Appsas\Controllers;
 
 use Appsas\FS;
 
-class PradziaController
+class PradziaController extends BaseController
 {
     public function index()
     {
@@ -12,7 +12,7 @@ class PradziaController
         $failoSistema = new FS('../src/html/pradzia.html');
         $failoTurinys = $failoSistema->getFailoTurinys();
         foreach ($_REQUEST as $key => $item) {
-            $failoTurinys = str_replace("{{$key}}", $item, $failoTurinys);
+            $failoTurinys = str_replace("{\{$key}}", $item, $failoTurinys);
         }
         return $failoTurinys;
     }
