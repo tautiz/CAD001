@@ -12,7 +12,7 @@ class PersonController extends BaseController
 {
     public const TITLE = 'Asmenys';
 
-    public function list()
+    public function list(): Response
     {
         $config = new Configs();
         $db = new Database($config);
@@ -22,8 +22,8 @@ class PersonController extends BaseController
 
         $asmenys = $db->query('SELECT p.*, concat(c.title, \' - \', a.city, \' - \', a.street, \' - \', a.postcode) address
 FROM persons p
-    JOIN addresses a on p.address_id = a.id 
-    JOIN countries c on a.country_iso = c.iso 
+    LEFT JOIN addresses a on p.address_id = a.id 
+    LEFT JOIN countries c on a.country_iso = c.iso 
 ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
 
         $rez = $this->generatePersonsTable($asmenys);
@@ -32,18 +32,19 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
         $failoTurinys = $failoSistema->getFailoTurinys();
         $failoTurinys = str_replace("{{body}}", $rez, $failoTurinys);
 
-        return $failoTurinys;
+        return $this->response($failoTurinys);
     }
 
-    public function new()
+    public function new(): Response
     {
 //      Nuskaitomas HTML failas ir siunciam jo teksta i Output klase
         $failoSistema = new FS('../src/html/person/new.html');
         $failoTurinys = $failoSistema->getFailoTurinys();
-        return $failoTurinys;
+
+        return $this->response($failoTurinys);
     }
 
-    public function store()
+    public function store(): Response
     {
         $vardas = $_POST['vardas'] ?? '';
         $pavarde = $_POST['pavarde'] ?? '';
@@ -68,10 +69,10 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
             ]
         );
 
-        return "New record created successfully";
+        return $this->redirect('/persons', ['message' => "Record created successfully"]);
     }
 
-    public function delete()
+    public function delete(): Response
     {
         $kuris = (int)$_GET['id'] ?? null;
 
@@ -84,10 +85,10 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
 
         $db->query("DELETE FROM `persons` WHERE `id` = :id", ['id' => $kuris]);
 
-        return "Record deleted successfully";
+        return $this->redirect('/persons', ['message' => "Record deleted successfully"]);
     }
 
-    public function edit()
+    public function edit(): Response
     {
         $failoSistema = new FS('../src/html/person/edit.html');
         $failoTurinys = $failoSistema->getFailoTurinys();
@@ -101,12 +102,11 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
             $failoTurinys = str_replace("{{" . $key . "}}", $item, $failoTurinys);
         }
 
-        return $failoTurinys;
+        return $this->response($failoTurinys);
     }
 
     public function update(): Response
     {
-        $id = $_POST['id'] ?? '';
         $vardas = $_POST['vardas'] ?? '';
         $pavarde = $_POST['pavarde'] ?? '';
         $id = (int)$_POST['id'] ?? '';
@@ -138,12 +138,10 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
             ]
         );
 
-        $response = new Response("Record updated successfully");
-        $response->redirect('/persons');
-        return $response;
+        return $this->redirect('/person/show?id='.$id, ['message' => "Record updated successfully"]);
     }
 
-    public function show()
+    public function show(): Response
     {
         $failoSistema = new FS('../src/html/person/show.html');
         $failoTurinys = $failoSistema->getFailoTurinys();
@@ -157,7 +155,7 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
             $failoTurinys = str_replace("{{" . $key . "}}", $item, $failoTurinys);
         }
 
-        return $failoTurinys;
+        return $this->response($failoTurinys);
     }
 
     /**

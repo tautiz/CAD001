@@ -4,18 +4,20 @@ namespace Appsas;
 
 class Response
 {
-    public string $content;
+    public mixed $content;
     public bool $redirect = false;
-    public string $redirectUrl = '';
+    public ?string $redirectUrl;
 
-    public function __construct(string $content)
+    public function __construct(mixed $content)
     {
         $this->content = $content;
     }
 
-    public function redirect(string $url): void
+    public function redirect(string $url, mixed $content = null): self
     {
+        $this->content = $content;
         $this->redirect = true;
         $this->redirectUrl = $url;
+        return $this;
     }
 }

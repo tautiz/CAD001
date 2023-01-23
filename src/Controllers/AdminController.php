@@ -5,6 +5,8 @@ namespace Appsas\Controllers;
 use Appsas\Authenticator;
 use Appsas\Exceptions\UnauthenticatedException;
 use Appsas\HtmlRender;
+use Appsas\Request;
+use Appsas\Response;
 
 class AdminController extends BaseController
 {
@@ -13,40 +15,39 @@ class AdminController extends BaseController
     public function __construct(Authenticator $authenticator = null)
     {
         $this->authenticator = $authenticator ?? new Authenticator();
+        parent::__construct();
     }
 
     /**
      * @throws UnauthenticatedException
      */
-    public function index()
+    public function index(): Response
     {
         if (!$this->authenticator->isLoggedIn()) {
             throw new UnauthenticatedException();
         }
 
-        return 'ADMIN puslapis';
-//        $render = new HtmlRender($output);
-//        $render->render();
+        return $this->response('ADMIN puslapis');
     }
 
     /**
      * @throws UnauthenticatedException
      */
-    public function login()
+    public function login(Request $request): Response
     {
-        $userName = $_POST['username'] ?? null;
-        $password = $_POST['password'] ?? null;
+        $userName = $request->get('username');
+        $password = $request->get('password');
 
         if(!empty($userName) && !empty($password)) {
             $this->authenticator->login($userName, $password);
-            header('Location: /admin');
+            return $this->redirect('/admin', 'Sveikiname prisijungus');
         }
     }
 
 
-    public function logout()
+    public function logout(): Response
     {
         $this->authenticator->logout();
-        return '';
+        $this->redirect('/', 'Sveikiname atsijungus');
     }
 }
