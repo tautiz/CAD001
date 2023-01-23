@@ -18,13 +18,11 @@ class KontaktaiController extends BaseController
 
     public function index(): Response
     {
-        {
-            // Nuskaitomas HTML failas ir siunciam jo teksta i Output klase
-            $failoSistema = new FS('../src/html/kontaktai.html');
-            $failoTurinys = $failoSistema->getFailoTurinys();
-            $this->log->info('Kontaktai atidaryti');
+        // Nuskaitomas HTML failas ir siunciam jo teksta i Output klase
+        $failoSistema = new FS('../src/html/kontaktai.html');
+        $failoTurinys = $failoSistema->getFailoTurinys();
+        $this->log->info('Kontaktai atidaryti');
 
-            return $this->response($failoTurinys);
-        }
+        return $this->response($failoTurinys);
     }
 }

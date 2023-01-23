@@ -4,6 +4,7 @@ namespace Appsas\Controllers;
 
 use Appsas\Database;
 use Appsas\FS;
+use Appsas\Request;
 use Appsas\Response;
 use Appsas\Validator;
 use Appsas\Configs;
@@ -105,21 +106,13 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
         return $this->response($failoTurinys);
     }
 
-    public function update(): Response
+    public function update(Request $request): Response
     {
-        $vardas = $_POST['vardas'] ?? '';
-        $pavarde = $_POST['pavarde'] ?? '';
-        $id = (int)$_POST['id'] ?? '';
-        $email = $_POST['email'] ?? '';
-        $tel = $_POST['tel'] ?? '';
-        $addrId = (int)$_POST['addr_id'] ?? '';
-        $kodas = $_POST['kodas'] ?? '';
-
-        Validator::required($vardas);
-        Validator::required($pavarde);
-        Validator::required($kodas);
-        Validator::numeric($kodas);
-        Validator::asmensKodas($kodas);
+        Validator::required($request->get('vardas'));
+        Validator::required($request->get('pavarde'));
+        Validator::required($request->get('kodas'));
+        Validator::numeric($request->get('kodas'));
+        Validator::asmensKodas($request->get('kodas'));
 
         $conf = new Configs();
         $db = new Database($conf);
@@ -127,18 +120,10 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
         $db->query(
             "UPDATE `persons` SET `first_name` = :vardas, `last_name` = :pavarde, `code` = :kodas, `email` = :email,
                      `phone` = :tel, `address_id` = :addr_id WHERE `id` = :id",
-            [
-                'vardas' => $vardas,
-                'pavarde' => $pavarde,
-                'kodas' => $kodas,
-                'email' => $email,
-                'tel' => $tel,
-                'addr_id' => $addrId,
-                'id' => $id,
-            ]
+            $request->all()
         );
 
-        return $this->redirect('/person/show?id='.$id, ['message' => "Record updated successfully"]);
+        return $this->redirect('/person/show?id='.$request->get('id'), ['message' => "Record updated successfully"]);
     }
 
     public function show(): Response
