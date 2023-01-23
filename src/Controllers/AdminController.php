@@ -4,7 +4,6 @@ namespace Appsas\Controllers;
 
 use Appsas\Authenticator;
 use Appsas\Exceptions\UnauthenticatedException;
-use Appsas\HtmlRender;
 use Appsas\Request;
 use Appsas\Response;
 
@@ -38,10 +37,11 @@ class AdminController extends BaseController
         $userName = $request->get('username');
         $password = $request->get('password');
 
-        if(!empty($userName) && !empty($password)) {
-            $this->authenticator->login($userName, $password);
+        if(empty($userName) && empty($password)) {
+            return $this->redirect('/', ['message' => 'Nesupildyti prisijungimo duomenys']);
         }
 
+        $this->authenticator->login($userName, $password);
         return $this->redirect('/admin', ['message' => 'Sveikiname prisijungus']);
     }
 
