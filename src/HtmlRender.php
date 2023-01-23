@@ -2,30 +2,29 @@
 
 namespace Appsas;
 
-use Appsas\Exceptions\MissingVariableException;
-use Appsas\FS;
-
 class HtmlRender extends AbstractRender
 {
-    protected function getContent(): string
+    public function setContent(mixed $content)
     {
-        $failoSistema = new FS('../src/html/Dashboard.html');
-        $failoTurinys = $failoSistema->getFailoTurinys();
-
-        $duomMas = [
-            'username' => $_SESSION['username'],
-            'userType' => 'Admin',
-            'loggedInDate' => date('Y-m-d H:i:s'),
-            'nera_sito_raktazodzio' => 'Turi ismesti klaida',
-        ];
-
-        foreach ($duomMas as $key => $value) {
-            if (!str_contains($failoTurinys, '{{' . $key . '}}')) {
-                throw new MissingVariableException('Nerastas raktazodis: ' . $key);
+        // Iš kontrolerio funkcijos gautą atsakymą talpiname į main.html layout failą
+        $fs = new FS('../src/html/layout/main.html');
+        $fileContent = $fs->getFailoTurinys();
+//        $title = $this->controller::TITLE;
+//        $fileContent = str_replace("{{title}}", $title, $fileContent);
+        if (is_array($content)) {
+            foreach ($content as $key => $item) {
+                $fileContent = str_replace("{{{$key}}}", $item, $fileContent);
             }
-            $failoTurinys = str_replace('{{' . $key . '}}', $value, $failoTurinys);
+        } else {
+            $fileContent = str_replace("{{content}}", $content, $fileContent);
         }
 
-        return $failoTurinys;
+        // Išvalomi Templeituose likę {{}} tagai
+        preg_match_all('/{{(.*?)}}/', $fileContent, $matches);
+        foreach ($matches[0] as $key) {
+            $fileContent = str_replace($key, '', $fileContent);
+        }
+
+        $this->output->store($fileContent);
     }
 }

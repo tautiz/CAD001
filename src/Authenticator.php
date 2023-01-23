@@ -32,6 +32,9 @@ class Authenticator
      */
     public function login(string $checkUser, string $checkPass): bool
     {
+        $urn = $_REQUEST['userName'] ?? null;
+        $usr = $request->get('userName');
+
         $loginsMas = [
             'admin' => 'slapta',
             'tautiz' => 'pass',

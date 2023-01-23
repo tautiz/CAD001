@@ -3,17 +3,24 @@
 namespace Appsas;
 
 use Appsas\Exceptions\PageNotFoundException;
+use Appsas\Request;
 
 class Router
 {
-    private array $routes = [];
+    /**
+     * @param Output $output
+     * @param array $routes
+     */
+    public function __construct(protected Output $output, private array $routes = [])
+    {
+    }
 
     /**
      * Prideda Routus į $this->routes masyvą
      *
-     * @param string $path
-     * @param string $controller
      * @param string $method
+     * @param string $url
+     * @param array $controllerData
      */
     public function addRoute(string $method, string $url, array $controllerData): void
     {
@@ -49,34 +56,26 @@ class Router
             $controller = $controllerData[0];
             $action = $controllerData[1];
             // Iškviečiamas kontrolierio ($controller) objektas ir kviečiamas jo metodas ($action)
-            $response = $controller->$action();
+            $request = new Request();
+            $response = $controller->$action($request);
             if($response instanceof Response && $response->redirect) {
                 header('location: ' . $response->redirectUrl);
                 $response->redirect = false;
                 exit;
             }
+
+            if (!$response instanceof Response) {
+                throw new \Exception("Controllerio $controller metodas '$action' turi grąžinti Response objektą");
+            }
+
+            // Iškviečiamas Render klasės objektas ir jo metodas setContent()
+            $render = new HtmlRender($this->output);
+            $render->setContent($response->content);
+
+            // Spausdinam viska kas buvo 'Storinta' Output klaseje
+            $this->output->print();
         } else {
             throw new PageNotFoundException("Adresas: [$method] /$url nerastas");
         }
-
-        if (!$response instanceof Response) {
-            throw new \Exception('Controllerio metodas turi grąžinti Response objektą');
-        }
-        $response = $response->content;
-
-        // Iš kontrolerio funkcijos gautą atsakymą talpiname į main.html layout failą
-        $failoSistema = new FS('../src/html/layout/main.html');
-        $failoTurinys = $failoSistema->getFailoTurinys();
-        $title = $controller::TITLE;
-        $failoTurinys = str_replace("{{title}}", $title, $failoTurinys);
-        $failoTurinys = str_replace("{{content}}", $response, $failoTurinys);
-
-        // Išvalomi Templeituose likę {{}} tagai
-        preg_match_all('/{{(.*?)}}/', $failoTurinys, $matches);
-        foreach ($matches[0] as $key) {
-            $failoTurinys = str_replace($key, '', $failoTurinys);
-        }
-
-        echo $failoTurinys;
     }
 }

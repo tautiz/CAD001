@@ -27,7 +27,7 @@ try {
     $kontaktaiController = new KontaktaiController($log);
     $personController = new PersonController();
 
-    $router = new Router();
+    $router = new Router($output);
     $router->addRoute('GET', '', [new PradziaController(), 'index']);
     $router->addRoute('GET', 'admin', [$adminController, 'index']);
     $router->addRoute('POST', 'login', [$adminController, 'login']);
@@ -46,6 +46,3 @@ catch (Exception $e) {
     $handler = new ExceptionHandler($output, $log);
     $handler->handle($e);
 }
-
-// Spausdinam viska kas buvo 'Storinta' Output klaseje
-$output->print();
