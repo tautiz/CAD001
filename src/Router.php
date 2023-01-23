@@ -50,9 +50,19 @@ class Router
             $action = $controllerData[1];
             // Iškviečiamas kontrolierio ($controller) objektas ir kviečiamas jo metodas ($action)
             $response = $controller->$action();
+            if($response instanceof Response && $response->redirect) {
+                header('location: ' . $response->redirectUrl);
+                $response->redirect = false;
+                exit;
+            }
         } else {
             throw new PageNotFoundException("Adresas: [$method] /$url nerastas");
         }
+
+        if (!$response instanceof Response) {
+            throw new \Exception('Controllerio metodas turi grąžinti Response objektą');
+        }
+        $response = $response->content;
 
         // Iš kontrolerio funkcijos gautą atsakymą talpiname į main.html layout failą
         $failoSistema = new FS('../src/html/layout/main.html');

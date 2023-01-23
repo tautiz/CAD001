@@ -4,6 +4,7 @@ namespace Appsas\Controllers;
 
 use Appsas\Database;
 use Appsas\FS;
+use Appsas\Response;
 use Appsas\Validator;
 use Appsas\Configs;
 
@@ -103,7 +104,7 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
         return $failoTurinys;
     }
 
-    public function update()
+    public function update(): Response
     {
         $id = $_POST['id'] ?? '';
         $vardas = $_POST['vardas'] ?? '';
@@ -137,7 +138,9 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
             ]
         );
 
-        return "Record updated successfully";
+        $response = new Response("Record updated successfully");
+        $response->redirect('/persons');
+        return $response;
     }
 
     public function show()
