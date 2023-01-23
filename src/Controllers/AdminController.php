@@ -21,16 +21,13 @@ class AdminController extends BaseController
     /**
      * @throws UnauthenticatedException
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
         if (!$this->authenticator->isLoggedIn()) {
             throw new UnauthenticatedException();
         }
 
-        return $this->response([
-            'message' => $request->get('message'),
-            'content' => 'Admin puslapis! ' . $_SESSION['username'],
-        ]);
+        return $this->response('Admin puslapis! ' . $_SESSION['username']);
     }
 
     /**
@@ -47,7 +44,6 @@ class AdminController extends BaseController
 
         return $this->redirect('/admin', ['message' => 'Sveikiname prisijungus']);
     }
-
 
     public function logout(): Response
     {

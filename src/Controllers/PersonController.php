@@ -45,17 +45,13 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
         return $this->response($failoTurinys);
     }
 
-    public function store(): Response
+    public function store(Request $request): Response
     {
-        $vardas = $_POST['vardas'] ?? '';
-        $pavarde = $_POST['pavarde'] ?? '';
-        $kodas = (int)$_POST['kodas'] ?? '';
-
-        Validator::required($vardas);
-        Validator::required($pavarde);
-        Validator::required($kodas);
-        Validator::numeric($kodas);
-        Validator::asmensKodas($kodas);
+        Validator::required($request->get('vardas'));
+        Validator::required($request->get('pavarde'));
+        Validator::required((int)$request->get('kodas'));
+        Validator::numeric((int)$request->get('kodas'));
+        Validator::asmensKodas((int)$request->get('kodas'));
 
         $conf = new Configs();
         $conn = new Database($conf);
@@ -63,11 +59,7 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
         $conn->query(
             "INSERT INTO `persons` (`first_name`, `last_name`, `code`)
                     VALUES (:vardas, :pavarde, :kodas)",
-            [
-                'vardas' => $vardas,
-                'pavarde' => $pavarde,
-                'kodas' => $kodas,
-            ]
+            $request->all()
         );
 
         return $this->redirect('/persons', ['message' => "Record created successfully"]);
