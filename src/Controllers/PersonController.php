@@ -21,11 +21,21 @@ class PersonController extends BaseController
         $kiekis = $request->get('amount', 10);
         $orderBy = $request->get('orderby', 'id');
 
+        $searchQuery = '';
+        $params = [];
+        $search = $request->get('search');
+        if ($search) {
+            $searchQuery = "WHERE first_name LIKE :search OR last_name LIKE :search OR code LIKE :search";
+            $params['search'] = '%' . $search . '%';
+        }
+
         $asmenys = $db->query('SELECT p.*, concat(c.title, \' - \', a.city, \' - \', a.street, \' - \', a.postcode) address
-FROM persons p
-    LEFT JOIN addresses a on p.address_id = a.id 
-    LEFT JOIN countries c on a.country_iso = c.iso 
-ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
+                    FROM persons p
+                        LEFT JOIN addresses a on p.address_id = a.id 
+                        LEFT JOIN countries c on a.country_iso = c.iso 
+                        ' . $searchQuery . '
+                        ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis,
+            $params);
 
         $rez = $this->generatePersonsTable($asmenys);
 

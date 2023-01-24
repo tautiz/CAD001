@@ -10,7 +10,7 @@ use JetBrains\PhpStorm\NoReturn;
 use Monolog\Logger;
 use PDOException;
 
-readonly class ExceptionHandler
+class ExceptionHandler
 {
     public function __construct(private Output $output, private Logger $log)
     {
