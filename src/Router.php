@@ -55,9 +55,11 @@ class Router
             $controllerData = $this->routes[$method][$url];
             $controller = $controllerData[0];
             $action = $controllerData[1];
+
             // Iškviečiamas kontrolierio ($controller) objektas ir kviečiamas jo metodas ($action)
             $request = new Request();
             $response = $controller->$action($request);
+
             if($response instanceof Response && $response->redirect) {
                 header('location: ' . $response->redirectUrl);
                 $response->redirect = false;

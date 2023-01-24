@@ -45,4 +45,5 @@ try {
 catch (Exception $e) {
     $handler = new ExceptionHandler($output, $log);
     $handler->handle($e);
+    $output->print();
 }

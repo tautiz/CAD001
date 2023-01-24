@@ -2,6 +2,7 @@
 
 namespace Appsas\Controllers;
 
+use Appsas\HtmlRender;
 use Appsas\Response;
 
 class BaseController
@@ -18,6 +19,12 @@ class BaseController
     public function response(mixed $content): Response
     {
         $this->response->content = $content;
+        return $this->response;
+    }
+
+    public function render(string $template, mixed $content = null): Response
+    {
+        $this->response->content = HtmlRender::renderTemplate($template, $content);
         return $this->response;
     }
 

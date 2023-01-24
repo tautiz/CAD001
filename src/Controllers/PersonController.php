@@ -13,13 +13,13 @@ class PersonController extends BaseController
 {
     public const TITLE = 'Asmenys';
 
-    public function list(): Response
+    public function list(Request $request): Response
     {
         $config = new Configs();
         $db = new Database($config);
 
-        $kiekis = $_GET['amount'] ?? 10;
-        $orderBy = $_GET['orderby'] ?? 'id';
+        $kiekis = $request->get('amount', 10);
+        $orderBy = $request->get('orderby', 'id');
 
         $asmenys = $db->query('SELECT p.*, concat(c.title, \' - \', a.city, \' - \', a.street, \' - \', a.postcode) address
 FROM persons p
@@ -29,45 +29,37 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
 
         $rez = $this->generatePersonsTable($asmenys);
 
-        $failoSistema = new FS('../src/html/person/list.html');
-        $failoTurinys = $failoSistema->getFailoTurinys();
-        $failoTurinys = str_replace("{{body}}", $rez, $failoTurinys);
-
-        return $this->response($failoTurinys);
+        return $this->render('person/list', $rez);
     }
 
     public function new(): Response
     {
-//      Nuskaitomas HTML failas ir siunciam jo teksta i Output klase
-        $failoSistema = new FS('../src/html/person/new.html');
-        $failoTurinys = $failoSistema->getFailoTurinys();
-
-        return $this->response($failoTurinys);
+        return $this->render('person/new');
     }
 
     public function store(Request $request): Response
     {
-        Validator::required($request->get('vardas'));
-        Validator::required($request->get('pavarde'));
-        Validator::required((int)$request->get('kodas'));
-        Validator::numeric((int)$request->get('kodas'));
-        Validator::asmensKodas((int)$request->get('kodas'));
+        Validator::required($request->get('first_name'));
+        Validator::required($request->get('last_name'));
+        Validator::required((int)$request->get('code'));
+        Validator::numeric((int)$request->get('code'));
+        Validator::asmensKodas((int)$request->get('code'));
 
         $conf = new Configs();
         $conn = new Database($conf);
 
         $conn->query(
             "INSERT INTO `persons` (`first_name`, `last_name`, `code`)
-                    VALUES (:vardas, :pavarde, :kodas)",
+                    VALUES (:first_name, :last_name, :code)",
             $request->all()
         );
 
         return $this->redirect('/persons', ['message' => "Record created successfully"]);
     }
 
-    public function delete(): Response
+    public function delete(Request $request): Response
     {
-        $kuris = (int)$_GET['id'] ?? null;
+        $kuris = (int)$request->get('id');
 
         Validator::required($kuris);
         Validator::numeric($kuris);
@@ -81,58 +73,50 @@ ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis);
         return $this->redirect('/persons', ['message' => "Record deleted successfully"]);
     }
 
-    public function edit(): Response
+    public function edit(Request $request): Response
     {
-        $failoSistema = new FS('../src/html/person/edit.html');
-        $failoTurinys = $failoSistema->getFailoTurinys();
-
         $conf = new Configs();
         $db = new Database($conf);
 
-        $person = $db->query("SELECT * FROM `persons` WHERE `id` = :id", ['id' => $_GET['id']])[0];
+        $person = $db->query("SELECT * FROM `persons` WHERE `id` = :id", ['id' => $request->get('id')])[0];
 
-        foreach ($person as $key => $item) {
-            $failoTurinys = str_replace("{{" . $key . "}}", $item, $failoTurinys);
-        }
-
-        return $this->response($failoTurinys);
+        return $this->render('person/edit', $person);
     }
 
     public function update(Request $request): Response
     {
-        Validator::required($request->get('vardas'));
-        Validator::required($request->get('pavarde'));
-        Validator::required($request->get('kodas'));
-        Validator::numeric($request->get('kodas'));
-        Validator::asmensKodas($request->get('kodas'));
+        Validator::required($request->get('first_name'));
+        Validator::required($request->get('last_name'));
+        Validator::required($request->get('code'));
+        Validator::numeric($request->get('code'));
+        Validator::asmensKodas($request->get('code'));
 
         $conf = new Configs();
         $db = new Database($conf);
 
         $db->query(
-            "UPDATE `persons` SET `first_name` = :vardas, `last_name` = :pavarde, `code` = :kodas, `email` = :email,
-                     `phone` = :tel, `address_id` = :addr_id WHERE `id` = :id",
+            "UPDATE `persons` 
+                    SET `first_name` = :first_name, 
+                        `last_name` = :last_name, 
+                        `code` = :code, 
+                        `email` = :email,          
+                        `phone` = :phone, 
+                        `address_id` = :address_id 
+                    WHERE `id` = :id",
             $request->all()
         );
 
         return $this->redirect('/person/show?id='.$request->get('id'), ['message' => "Record updated successfully"]);
     }
 
-    public function show(): Response
+    public function show(Request $request): Response
     {
-        $failoSistema = new FS('../src/html/person/show.html');
-        $failoTurinys = $failoSistema->getFailoTurinys();
-
         $conf = new Configs();
         $db = new Database($conf);
 
-        $person = $db->query("SELECT * FROM `persons` WHERE `id` = :id", ['id' => $_GET['id']])[0];
+        $person = $db->query("SELECT * FROM `persons` WHERE `id` = :id", ['id' => $request->get('id')])[0];
 
-        foreach ($person as $key => $item) {
-            $failoTurinys = str_replace("{{" . $key . "}}", $item, $failoTurinys);
-        }
-
-        return $this->response($failoTurinys);
+        return $this->render('person/show', $person);
     }
 
     /**

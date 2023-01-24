@@ -6,6 +6,7 @@ use Appsas\Authenticator;
 use Appsas\Exceptions\UnauthenticatedException;
 use Appsas\Request;
 use Appsas\Response;
+use JetBrains\PhpStorm\NoReturn;
 
 class AdminController extends BaseController
 {
@@ -26,7 +27,7 @@ class AdminController extends BaseController
             throw new UnauthenticatedException();
         }
 
-        return $this->response('Admin puslapis! ' . $_SESSION['username']);
+        return $this->render('admin/dashboard', ['username' => $_SESSION['username']]);
     }
 
     /**
@@ -45,9 +46,8 @@ class AdminController extends BaseController
         return $this->redirect('/admin', ['message' => 'Sveikiname prisijungus']);
     }
 
-    public function logout(): Response
+    #[NoReturn] public function logout(): Response
     {
         $this->authenticator->logout();
-        return $this->redirect('/', ['message' => 'Sveikiname atsijungus']);
     }
 }
