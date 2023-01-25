@@ -7,13 +7,10 @@ use Appsas\Response;
 
 class BaseController
 {
-    protected Response $response;
-
     const TITLE = 'Mano puslapis';
 
-    public function __construct()
+    public function __construct(protected HtmlRender $htmlRender, protected Response $response)
     {
-        $this->response = new Response(null);
     }
 
     public function response(mixed $content): Response
@@ -24,7 +21,7 @@ class BaseController
 
     public function render(string $template, mixed $content = null): Response
     {
-        $this->response->content = HtmlRender::renderTemplate($template, $content);
+        $this->response->content = $this->htmlRender->renderTemplate($template, $content);
         return $this->response;
     }
 

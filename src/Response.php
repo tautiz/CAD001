@@ -8,11 +8,6 @@ class Response
     public bool $redirect = false;
     public ?string $redirectUrl;
 
-    public function __construct(mixed $content)
-    {
-        $this->content = $content;
-    }
-
     public function redirect(string $url, mixed $content = null): self
     {
         $this->content = $content;

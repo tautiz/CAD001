@@ -4,6 +4,7 @@ namespace Appsas;
 
 use Appsas\Exceptions\PageNotFoundException;
 use Appsas\Request;
+use Exception;
 
 class Router
 {
@@ -11,7 +12,7 @@ class Router
      * @param Output $output
      * @param array $routes
      */
-    public function __construct(protected Output $output, private array $routes = [])
+    public function __construct(protected Output $output, protected HtmlRender $render, protected array $routes = [])
     {
     }
 
@@ -67,12 +68,11 @@ class Router
             }
 
             if (!$response instanceof Response) {
-                throw new \Exception("Controllerio $controller metodas '$action' turi grąžinti Response objektą");
+                throw new Exception("Controllerio $controller metodas '$action' turi grąžinti Response objektą");
             }
 
             // Iškviečiamas Render klasės objektas ir jo metodas setContent()
-            $render = new HtmlRender($this->output);
-            $render->setContent($response->content);
+            $this->render->setContent($response->content);
 
             // Spausdinam viska kas buvo 'Storinta' Output klaseje
             $this->output->print();

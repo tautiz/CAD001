@@ -4,15 +4,15 @@ namespace Appsas;
 
 class FS
 {
-    private string $failoTurinys;
+    protected string $fileName;
 
-    public function __construct(private string $fileName)
+    public function setFailoPavadinimas(string $fileName): void
     {
-        $this->failoTurinys = file_get_contents($this->fileName);
+        $this->fileName = $fileName;
     }
 
     public function getFailoTurinys(): string
     {
-        return $this->failoTurinys;
+        return file_get_contents($this->fileName);
     }
 }

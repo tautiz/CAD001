@@ -4,6 +4,7 @@ namespace Appsas\Controllers;
 
 use Appsas\Database;
 use Appsas\FS;
+use Appsas\HtmlRender;
 use Appsas\Request;
 use Appsas\Response;
 use Appsas\Validator;
@@ -130,21 +131,6 @@ class PersonController extends BaseController
     }
 
     /**
-     * @param mixed $asmuo
-     * @return string
-     */
-    protected function generatePersonRow(array $asmuo): string
-    {
-        $failoSistema = new FS('../src/html/person/person_row.html');
-        $failoTurinys = $failoSistema->getFailoTurinys();
-        foreach ($asmuo as $key => $item) {
-            $failoTurinys = str_replace("{{" . $key . "}}", $item, $failoTurinys);
-        }
-
-        return $failoTurinys;
-    }
-
-    /**
      * @param array $asmenys
      * @return string
      */
@@ -162,7 +148,7 @@ class PersonController extends BaseController
                 <th>Veiksmai</th>
             </tr>';
         foreach ($asmenys as $asmuo) {
-            $rez .= $this->generatePersonRow($asmuo);
+            $rez .= $this->htmlRender->renderTemplate('person/person_row', $asmuo);
         }
         $rez .= '</table>';
         return $rez;

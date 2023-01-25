@@ -4,18 +4,16 @@ namespace Appsas\Controllers;
 
 use Appsas\Authenticator;
 use Appsas\Exceptions\UnauthenticatedException;
+use Appsas\HtmlRender;
 use Appsas\Request;
 use Appsas\Response;
 use JetBrains\PhpStorm\NoReturn;
 
 class AdminController extends BaseController
 {
-    private Authenticator $authenticator;
-    // BAD PRACTICE: DI metu priskirti numatytasias (Default) reiksmes
-    public function __construct(Authenticator $authenticator = null)
+    public function __construct(protected Authenticator $authenticator, HtmlRender $htmlRender, Response $response)
     {
-        $this->authenticator = $authenticator ?? new Authenticator();
-        parent::__construct();
+        parent::__construct($htmlRender, $response);
     }
 
     /**
