@@ -3,8 +3,8 @@
 namespace Appsas\Controllers;
 
 use Appsas\Database;
-use Appsas\FS;
 use Appsas\HtmlRender;
+use Appsas\Managers\PersonsManager;
 use Appsas\Request;
 use Appsas\Response;
 use Appsas\Validator;
@@ -14,29 +14,27 @@ class PersonController extends BaseController
 {
     public const TITLE = 'Asmenys';
 
+    public function __construct(protected PersonsManager $manager, Response $response, HtmlRender $htmlRender)
+    {
+        parent::__construct($htmlRender, $response);
+    }
+
     public function list(Request $request): Response
     {
-        $config = new Configs();
-        $db = new Database($config);
+// TODO: Perkelti Filtravima
+//
+//        $kiekis = $request->get('amount', 10);
+//        $orderBy = $request->get('orderby', 'id');
+//
+//        $searchQuery = '';
+//        $params = [];
+//        $search = $request->get('search');
+//        if ($search) {
+//            $searchQuery = "WHERE first_name LIKE :search OR last_name LIKE :search OR code LIKE :search";
+//            $params['search'] = '%' . $search . '%';
+//        }
 
-        $kiekis = $request->get('amount', 10);
-        $orderBy = $request->get('orderby', 'id');
-
-        $searchQuery = '';
-        $params = [];
-        $search = $request->get('search');
-        if ($search) {
-            $searchQuery = "WHERE first_name LIKE :search OR last_name LIKE :search OR code LIKE :search";
-            $params['search'] = '%' . $search . '%';
-        }
-
-        $asmenys = $db->query('SELECT p.*, concat(c.title, \' - \', a.city, \' - \', a.street, \' - \', a.postcode) address
-                    FROM persons p
-                        LEFT JOIN addresses a on p.address_id = a.id 
-                        LEFT JOIN countries c on a.country_iso = c.iso 
-                        ' . $searchQuery . '
-                        ORDER BY ' . $orderBy . ' DESC LIMIT ' . $kiekis,
-            $params);
+        $asmenys = $this->manager->getAll();
 
         $rez = $this->generatePersonsTable($asmenys);
 
@@ -56,10 +54,7 @@ class PersonController extends BaseController
         Validator::numeric((int)$request->get('code'));
         Validator::asmensKodas((int)$request->get('code'));
 
-        $conf = new Configs();
-        $conn = new Database($conf);
-
-        $conn->query(
+        $this->db->query(
             "INSERT INTO `persons` (`first_name`, `last_name`, `code`)
                     VALUES (:first_name, :last_name, :code)",
             $request->all()
@@ -76,20 +71,14 @@ class PersonController extends BaseController
         Validator::numeric($kuris);
         Validator::min($kuris, 1);
 
-        $conf = new Configs();
-        $db = new Database($conf);
-
-        $db->query("DELETE FROM `persons` WHERE `id` = :id", ['id' => $kuris]);
+        $this->db->query("DELETE FROM `persons` WHERE `id` = :id", ['id' => $kuris]);
 
         return $this->redirect('/persons', ['message' => "Record deleted successfully"]);
     }
 
     public function edit(Request $request): Response
     {
-        $conf = new Configs();
-        $db = new Database($conf);
-
-        $person = $db->query("SELECT * FROM `persons` WHERE `id` = :id", ['id' => $request->get('id')])[0];
+        $person = $this->manager->getOne((int)$request->get('id'));
 
         return $this->render('person/edit', $person);
     }
