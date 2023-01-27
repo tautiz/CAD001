@@ -2,10 +2,10 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 #if file is resource, redirect to site folder
-RewriteRule ^(.*)\.(css|js|js.php|png|jpg|gif|ico|htm|html)$ Sites/%1%{REQUEST_URI} [L]
+RewriteRule ^(.*)\.(css|js|js.php|png|jpg|gif|ico|svg|htm|html)$ Sites/%1%{REQUEST_URI} [L]
 #if not found, redirect to base folder
 #is file in base folder?
 RewriteCond  %{DOCUMENT_ROOT}/%{REQUEST_URI} -f
-RewriteRule ^(.*)\.(css|js|js.php|png|jpg|gif|ico|htm|html)$ $1.$2 [L]
+RewriteRule ^(.*)\.(css|js|js.php|png|jpg|gif|ico|svg|htm|html)$ $1.$2 [L]
 #the rest of requests go through Index.php
 RewriteRule ^(.*)(/?)$ index.php [NC,L,QSA]

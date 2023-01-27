@@ -2,13 +2,11 @@
 
 namespace Appsas\Controllers;
 
-use Appsas\Database;
 use Appsas\HtmlRender;
 use Appsas\Managers\PersonsManager;
 use Appsas\Request;
 use Appsas\Response;
 use Appsas\Validator;
-use Appsas\Configs;
 
 class PersonController extends BaseController
 {
@@ -21,24 +19,15 @@ class PersonController extends BaseController
 
     public function list(Request $request): Response
     {
-// TODO: Perkelti Filtravima
-//
-//        $kiekis = $request->get('amount', 10);
-//        $orderBy = $request->get('orderby', 'id');
-//
-//        $searchQuery = '';
-//        $params = [];
-//        $search = $request->get('search');
-//        if ($search) {
-//            $searchQuery = "WHERE first_name LIKE :search OR last_name LIKE :search OR code LIKE :search";
-//            $params['search'] = '%' . $search . '%';
-//        }
+        $persons = $this->manager->getFiltered($request);
+        $total = $this->manager->getTotal();
+        $rez = $this->generatePersonsTable($persons);
 
-        $asmenys = $this->manager->getAll();
-
-        $rez = $this->generatePersonsTable($asmenys);
-
-        return $this->render('person/list', $rez);
+        return $this->render(
+            'person/list',
+            ['content' => $rez, 'pagination' => $this->generatePagination($total, $request), 'title' => self::TITLE],
+            ['title' => self::TITLE]
+        );
     }
 
     public function new(): Response
@@ -54,24 +43,20 @@ class PersonController extends BaseController
         Validator::numeric((int)$request->get('code'));
         Validator::asmensKodas((int)$request->get('code'));
 
-        $this->db->query(
-            "INSERT INTO `persons` (`first_name`, `last_name`, `code`)
-                    VALUES (:first_name, :last_name, :code)",
-            $request->all()
-        );
+        $this->manager->store($request->all());
 
         return $this->redirect('/persons', ['message' => "Record created successfully"]);
     }
 
     public function delete(Request $request): Response
     {
-        $kuris = (int)$request->get('id');
+        $id = (int)$request->get('id');
 
-        Validator::required($kuris);
-        Validator::numeric($kuris);
-        Validator::min($kuris, 1);
+        Validator::required($id);
+        Validator::numeric($id);
+        Validator::min($id, 1);
 
-        $this->db->query("DELETE FROM `persons` WHERE `id` = :id", ['id' => $kuris]);
+        $this->manager->delete($id);
 
         return $this->redirect('/persons', ['message' => "Record deleted successfully"]);
     }
@@ -91,30 +76,14 @@ class PersonController extends BaseController
         Validator::numeric($request->get('code'));
         Validator::asmensKodas($request->get('code'));
 
-        $conf = new Configs();
-        $db = new Database($conf);
+        $this->manager->update($request->all());
 
-        $db->query(
-            "UPDATE `persons` 
-                    SET `first_name` = :first_name, 
-                        `last_name` = :last_name, 
-                        `code` = :code, 
-                        `email` = :email,          
-                        `phone` = :phone, 
-                        `address_id` = :address_id 
-                    WHERE `id` = :id",
-            $request->all()
-        );
-
-        return $this->redirect('/person/show?id='.$request->get('id'), ['message' => "Record updated successfully"]);
+        return $this->redirect('/person/show?id=' . $request->get('id'), ['message' => "Record updated successfully"]);
     }
 
     public function show(Request $request): Response
     {
-        $conf = new Configs();
-        $db = new Database($conf);
-
-        $person = $db->query("SELECT * FROM `persons` WHERE `id` = :id", ['id' => $request->get('id')])[0];
+        $person = $$this->manager->getOne((int)$request->get('id'));
 
         return $this->render('person/show', $person);
     }

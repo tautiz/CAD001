@@ -1,18 +1,32 @@
-<h1>Persons</h1>
+<h1>{{title}}</h1>
 <hr>
 <div class="content">
-  <div class="left">
-    <a href="/person/new" class="btn-floating pulse waves-effect waves-light red btn-small"><i class="tiny material-icons">add</i></a>
-    <a href="/persons">10</a> |
-    <a href="/persons?amount=20">20</a> |
-    <a href="/persons?amount=50">50</a>
-  </div>
-  <div class="right">
-    <form action="/persons" method="get">
-      <input type="text" name="search" placeholder="Search">
-      <input type="submit" class="waves-effect waves-light btn" value="Search">
-    </form>
-  </div>
-  <hr>
-  {{content}}
+    <div class="row">
+        <div class="col s11">
+            <form action="/persons" method="get" class="col s12">
+                <input type="text" name="first_name" placeholder="Vardas">
+                <input type="submit" class="waves-effect waves-light btn" value="Search">
+            </form>
+            <br>
+        </div>
+        <div class="col s1 valign-wrapper" style="display:flex;justify-content:center;align-items:center;">
+            <div class="center-align">
+                <a href="/person/new" class="btn-floating pulse waves-effect waves-light red btn-large"><i
+                        class="tiny material-icons">add</i></a>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col s11">
+            {{pagination}}
+        </div>
+        <div class="col s1 valign-wrapper" style="align-items: stretch;">
+            <a href="/persons">10</a> |
+            <a href="/persons?amount=20">20</a> |
+            <a href="/persons?amount=50">50</a>
+        </div>
+    </div>
+    {{content}}
+    {{pagination}}
 </div>

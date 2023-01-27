@@ -5,6 +5,7 @@ namespace Appsas;
 class Response
 {
     public mixed $content;
+    public array $params = [];
     public bool $redirect = false;
     public ?string $redirectUrl;
 

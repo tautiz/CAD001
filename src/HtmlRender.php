@@ -29,8 +29,6 @@ class HtmlRender extends AbstractRender
         // Iš kontrolerio funkcijos gautą atsakymą talpiname į main.html layout failą
         $this->fs->setFailoPavadinimas("../src/html/$template.html");
         $fileContent = $this->fs->getFailoTurinys();
-//        $title = $this->controller::TITLE;
-//        $fileContent = str_replace("{{title}}", $title, $fileContent);
         if (is_array($content)) {
             foreach ($content as $key => $item) {
                 $fileContent = str_replace("{{{$key}}}", $item ?? '', $fileContent);

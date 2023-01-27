@@ -72,7 +72,13 @@ class Router
             }
 
             // Iškviečiamas Render klasės objektas ir jo metodas setContent()
-            $this->render->setContent($response->content);
+            $this->render->setContent(
+                [
+                    'content' => $response->content,
+                    'title' => $response->params['title'] ?? 'Mano svetaine',
+                    'message' => $request->get('message')
+                ]
+            );
 
             // Spausdinam viska kas buvo 'Storinta' Output klaseje
             $this->output->print();
