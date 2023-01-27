@@ -2,14 +2,8 @@
 
 namespace Appsas\Repositories;
 
-use Appsas\Database;
-
 class PersonsRepository extends BaseRepository implements RepositoryInterface
 {
-    public function __construct(protected Database $db)
-    {
-    }
-
     public function create(array $data): void
     {
         $this->db->query(
