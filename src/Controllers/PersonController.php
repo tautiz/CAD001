@@ -39,6 +39,9 @@ class PersonController extends BaseController
     {
         Validator::required($request->get('first_name'));
         Validator::required($request->get('last_name'));
+        Validator::required($request->get('email'));
+        Validator::required($request->get('phone'));
+        Validator::required($request->get('address_id'));
         Validator::required((int)$request->get('code'));
         Validator::numeric((int)$request->get('code'));
         Validator::asmensKodas((int)$request->get('code'));
@@ -83,7 +86,7 @@ class PersonController extends BaseController
 
     public function show(Request $request): Response
     {
-        $person = $$this->manager->getOne((int)$request->get('id'));
+        $person = $this->manager->getOne((int)$request->get('id'));
 
         return $this->render('person/show', $person);
     }
