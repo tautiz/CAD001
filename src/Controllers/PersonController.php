@@ -19,8 +19,10 @@ class PersonController extends BaseController
 
     public function list(Request $request): Response
     {
-        $persons = $this->manager->getFiltered($request);
-        $total = $this->manager->getTotal();
+        $persons = $this->manager->getAll();
+//        $persons = $this->manager->getFiltered($request);
+//        $total = $this->manager->getTotal();
+        $total = count($persons);
         $rez = $this->generatePersonsTable($persons);
 
         return $this->render(
@@ -46,7 +48,7 @@ class PersonController extends BaseController
         Validator::numeric((int)$request->get('code'));
         Validator::asmensKodas((int)$request->get('code'));
 
-        $this->manager->store($request->all());
+        $this->manager->store($request);
 
         return $this->redirect('/persons', ['message' => "Record created successfully"]);
     }
@@ -59,14 +61,14 @@ class PersonController extends BaseController
         Validator::numeric($id);
         Validator::min($id, 1);
 
-        $this->manager->delete($id);
+        $this->manager->delete($request);
 
         return $this->redirect('/persons', ['message' => "Record deleted successfully"]);
     }
 
     public function edit(Request $request): Response
     {
-        $person = $this->manager->getOne((int)$request->get('id'));
+        $person = $this->manager->getOne($request);
 
         return $this->render('person/edit', $person);
     }
@@ -79,14 +81,14 @@ class PersonController extends BaseController
         Validator::numeric($request->get('code'));
         Validator::asmensKodas($request->get('code'));
 
-        $this->manager->update($request->all());
+        $this->manager->update($request);
 
         return $this->redirect('/person/show?id=' . $request->get('id'), ['message' => "Record updated successfully"]);
     }
 
     public function show(Request $request): Response
     {
-        $person = $this->manager->getOne((int)$request->get('id'));
+        $person = $this->manager->getOne($request);
 
         return $this->render('person/show', $person);
     }
