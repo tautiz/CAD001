@@ -3,12 +3,16 @@
 namespace Appsas\Controllers;
 
 use Appsas\HtmlRender;
+use Appsas\Managers\ManagerInterface;
 use Appsas\Request;
 use Appsas\Response;
+use Appsas\Validator;
 
 class BaseController
 {
     public const TITLE = 'Mano puslapis';
+
+    protected ManagerInterface $manager;
 
     public function __construct(protected HtmlRender $htmlRender, protected Response $response)
     {
@@ -57,7 +61,7 @@ class BaseController
         }
         $data = [
             'current_page' => $currentPage,
-            'url' => '/persons',
+            'url' => $request->getUrl(),
             'prev' => '1',
             'amount' => $limit,
             'next' => $amountOfPages,
@@ -66,4 +70,70 @@ class BaseController
         return $this->htmlRender->renderTemplate('layout/pagination/list', $data);
     }
 
+// *********************************************************************************************************************
+
+    public function new(Request $request): Response
+    {
+        return $this->render(ltrim($request->getUrl(),'/'));
+    }
+
+    public function show(Request $request): Response
+    {
+        $person = $this->manager->getOne($request);
+
+        return $this->render(ltrim($request->getUrl(),'/'), $person);
+    }
+
+    public function edit(Request $request): Response
+    {
+        $person = $this->manager->getOne($request);
+
+        return $this->render(ltrim($request->getUrl(),'/'), $person);
+    }
+
+    public function store(Request $request): Response
+    {
+//        Validator::required($request->get('first_name'));
+//        Validator::required($request->get('last_name'));
+//        Validator::required($request->get('email'));
+//        Validator::required($request->get('phone'));
+//        Validator::required($request->get('address_id'));
+//        Validator::required((int)$request->get('code'));
+//        Validator::numeric((int)$request->get('code'));
+//        Validator::asmensKodas((int)$request->get('code'));
+
+        $this->manager->store($request);
+        $url = '/'.explode('/', $request->getUrl())[1] . 's';
+
+        return $this->redirect( $url, ['message' => "Record created successfully"]);
+    }
+
+    public function update(Request $request): Response
+    {
+//        Validator::required($request->get('first_name'));
+//        Validator::required($request->get('last_name'));
+//        Validator::required($request->get('code'));
+//        Validator::numeric($request->get('code'));
+//        Validator::asmensKodas($request->get('code'));
+
+        $this->manager->update($request);
+
+        $url = explode('/', $request->getUrl())[1];
+
+        return $this->redirect('/'.$url.'/show?id=' . $request->get('id'), ['message' => "Record updated successfully"]);
+    }
+
+    public function delete(Request $request): Response
+    {
+        $id = (int)$request->get('id');
+
+//        Validator::required($id);
+//        Validator::numeric($id);
+//        Validator::min($id, 1);
+
+        $this->manager->delete($request);
+
+        $url = explode('/', $request->getUrl())[1] . 's';
+        return $this->redirect('/'.$url, ['message' => "Record deleted successfully"]);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Appsas;
 
+use Appsas\Exceptions\ForeignKeyException;
 use Appsas\Exceptions\MissingVariableException;
 use Appsas\Exceptions\PageNotFoundException;
 use Appsas\Exceptions\UnauthenticatedException;
@@ -23,6 +24,7 @@ class ExceptionHandler
             UnauthenticatedException::class => $this->handleUnauthenticatedException($e),
             MissingVariableException::class => $this->handleMissingVariableException($e),
             PDOException::class => $this->handlePDOException($e),
+            ForeignKeyException::class => $this->handleFKException($e),
             default => $this->handleDefaultException($e),
         };
     }
@@ -30,7 +32,7 @@ class ExceptionHandler
     private function handleDefaultException(Exception $e): void
     {
         $this->output->store('Oi nutiko klaida! Bandyk vėliau dar karta.');
-        $this->log->error($e->getMessage());
+        $this->log->critical($e->getMessage());
     }
 
     #[NoReturn] private function handlePageNotFoundException(PageNotFoundException $e): void
@@ -57,5 +59,13 @@ class ExceptionHandler
     {
         $this->output->store('Kilo klaida duombazeje.');
         $this->log->error($e->getMessage());
+    }
+
+    #[NoReturn] private function handleFKException(ForeignKeyException $e): void
+    {
+        $message = $e->getMessage();
+        $this->log->critical($message);
+        header("Location: /?message=$message");
+        exit;
     }
 }

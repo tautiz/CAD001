@@ -27,4 +27,10 @@ class Database
         $stmt->execute($params);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function getTableColumnsData(string $tableName): array
+    {
+        $sql = "DESCRIBE $tableName;";
+        return $this->query($sql);
+    }
 }

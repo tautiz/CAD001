@@ -27,7 +27,7 @@ class Authenticator
         $db = new Database($conf);
 
         $login = $db->query(
-            'SELECT * FROM `users` where `name` = :name AND password = :pass AND state = 2',
+            'SELECT * FROM `user` where `name` = :name AND password = :pass AND state = 2',
             ['name' => $checkUser, 'pass' => $checkPass]
         );
 

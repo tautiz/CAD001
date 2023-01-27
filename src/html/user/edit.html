@@ -1,0 +1,11 @@
+<h1>User</h1>
+<span>Redagavimo forma</span>
+<form action="/user/update" method="post">
+    <input type="hidden" name="id" value="{{id}}"><br>
+    <input type="text" name="person_id" placeholder="Person_id" value="{{person_id}}"><br>
+    <input type="text" name="password" placeholder="Slaptazodis" value="{{password}}"><br>
+    <input type="email" name="name" placeholder="Prisijungimo vardas" value="{{name}}"><br>
+    <input type="text" name="state" placeholder="Statusas" value="{{state}}"><br>
+    <hr>
+    <input type="submit" class="waves-effect waves-light btn" value="Atnaujinti">
+</form>

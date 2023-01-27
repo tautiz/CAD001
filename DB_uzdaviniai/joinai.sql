@@ -72,7 +72,7 @@ where g.title = 'CS_MySQL_V';
 
 #7 Uždavinys:
 # Surasti visus asmenis (‘persons’) kurie neturi vardo (first_name’) arba pavardės (‘last_name’) ir turi
-# neaktyvų (‘Inactive’) vartotoją (‘users’) (Jei tokių duomenų nėra prieš atliekant užduotį reikia
+# neaktyvų (‘Inactive’) vartotoją (‘user’) (Jei tokių duomenų nėra prieš atliekant užduotį reikia
 # pakoreguoti persons lentos  duomenis ir pašalinti keleta vardu ir pavardziu)
 
 select p.*, u.*

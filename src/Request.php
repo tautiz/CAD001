@@ -13,4 +13,9 @@ class Request
     {
         return $this->all()[$string] ?? $default;
     }
+
+    public function getUrl(): string
+    {
+        return explode('?', $_SERVER['REQUEST_URI'])[0];
+    }
 }

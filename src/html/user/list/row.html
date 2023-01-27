@@ -1,0 +1,24 @@
+<tr>
+    <td>{{id}}</td>
+    <td>{{person_id}}</td>
+    <td>{{password}}</td>
+    <td>{{name}}</td>
+    <td>{{state}}</td>
+    <td>
+        <a href="/user/edit?id={{id}}"
+           data-tooltip="Redaguoti"
+           class="tooltipped waves-effect waves-light green btn-small">
+            <i class="tiny material-icons">edit</i>
+        </a>
+        <a href="/user/delete?id={{id}}"
+           data-tooltip="Šalinti"
+           class="tooltipped waves-effect waves-light red btn-small">
+            <i class="tiny material-icons">delete</i>
+        </a>
+        <a href="/user/show?id={{id}}"
+           data-tooltip="Peržiūrėti"
+           class="tooltipped waves-effect waves-light btn-small">
+            <i class="tiny material-icons">pageview</i>
+        </a>
+    </td>
+</tr>

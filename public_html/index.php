@@ -1,10 +1,11 @@
 <?php
 
-use Appsas\Authenticator;
+use Appsas\Controllers\AddressController;
 use Appsas\Controllers\AdminController;
 use Appsas\Controllers\KontaktaiController;
 use Appsas\Controllers\PersonController;
 use Appsas\Controllers\PradziaController;
+use Appsas\Controllers\UserController;
 use Appsas\ExceptionHandler;
 use Appsas\Output;
 use Appsas\Router;
@@ -27,22 +28,23 @@ try {
     $container = $containerBuilder->build();
 
     $adminController = $container->get(AdminController::class);
-    $kontaktaiController = $container->get(KontaktaiController::class);
+    $contactsController = $container->get(KontaktaiController::class);
     $personController = $container->get(PersonController::class);
+    $userController = $container->get(UserController::class);
+    $addressController = $container->get(AddressController::class);
 
+    /** @var Router $router */
     $router = $container->get(Router::class);
     $router->addRoute('GET', '', [$container->get(PradziaController::class), 'index']);
     $router->addRoute('GET', 'admin', [$adminController, 'index']);
     $router->addRoute('POST', 'login', [$adminController, 'login']);
     $router->addRoute('GET', 'logout', [$adminController, 'logout']);
-    $router->addRoute('GET', 'kontaktai', [$kontaktaiController, 'index']);
-    $router->addRoute('GET', 'persons', [$personController, 'list']);
-    $router->addRoute('GET', 'person/new', [$personController, 'new']);
-    $router->addRoute('GET', 'person/delete', [$personController, 'delete']);
-    $router->addRoute('GET', 'person/edit', [$personController, 'edit']);
-    $router->addRoute('GET', 'person/show', [$personController, 'show']);
-    $router->addRoute('POST', 'person', [$personController, 'store']);
-    $router->addRoute('POST', 'person/update', [$personController, 'update']);
+    $router->addRoute('GET', 'kontaktai', [$contactsController, 'index']);
+
+    $router->resource('person', $personController);
+    $router->resource('user', $userController);
+    $router->resource('address', $addressController);
+
     $router->run();
 }
 catch (Exception $e) {

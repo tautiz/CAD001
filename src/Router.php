@@ -2,6 +2,7 @@
 
 namespace Appsas;
 
+use Appsas\Controllers\ControllerInterface;
 use Appsas\Exceptions\PageNotFoundException;
 use Appsas\Request;
 use Exception;
@@ -38,6 +39,17 @@ class Router
         $this->addRoute('POST', $url, $controllerData);
     }
 
+    public function resource(string $url, ControllerInterface $controller): void
+    {
+        $this->get($url . 's', [$controller, 'list']);
+        $this->get($url . '/new', [$controller, 'new']);
+        $this->get($url . '/delete', [$controller, 'delete']);
+        $this->get($url . '/edit', [$controller, 'edit']);
+        $this->get($url . '/show', [$controller, 'show']);
+        $this->post($url, [$controller, 'store']);
+        $this->post($url . '/update', [$controller, 'update']);
+    }
+
     /**
      * @throws PageNotFoundException
      */
@@ -61,7 +73,7 @@ class Router
             $request = new Request();
             $response = $controller->$action($request);
 
-            if($response instanceof Response && $response->redirect) {
+            if ($response instanceof Response && $response->redirect) {
                 header('location: ' . $response->redirectUrl);
                 $response->redirect = false;
                 exit;
