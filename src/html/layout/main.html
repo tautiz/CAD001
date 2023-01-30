@@ -12,53 +12,70 @@
     <link href="/css/style.css" rel="stylesheet">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0/dist/themes/light.css"/>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0/dist/shoelace.js"></script>
 </head>
 <body>
-<header>
-    <nav>
-        <div class="nav-wrapper">
-            <a href="#" class="brand-logo">Logo</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/">Pradžia</a></li>
-                <li><a href="/persons">Persons</a></li>
-                <li><a href="/addresss">Adresai</a></li>
-                <li><a href="/users">Vartotojai</a></li>
-                <li><a href="/kontaktai">Kontaktai</a></li>
-            </ul>
-        </div>
-    </nav>
-</header>
-<div class="container">
-    <div class="hidden message">{{message}}</div>
-    {{content}}
-</div>
-<br>
-<footer class="page-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col l6 s12">
-                <h5 class="white-text">Footer Content</h5>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
-                    content.</p>
-            </div>
-            <div class="col l4 offset-l2 s12">
-                <h5 class="white-text">Links</h5>
-                <ul>
-                    <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+<img src="/img/background.png" class="full_fit">
+<div class="main_grid">
+    <header>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo">
+                    <img src="/img/logo.png" alt="logo" class="logo">
+                </a>
+                <a href="/login">
+                    <sl-avatar
+                            initials="{{user}}"
+                            class="right hide-on-med-and-down"
+                            label="User avatar">
+                    </sl-avatar>
+                </a>
+
+
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/">Pradžia</a></li>
+                    <li><a href="/persons">Persons</a></li>
+                    <li><a href="/addresss">Adresai</a></li>
+                    <li><a href="/users">Vartotojai</a></li>
+                    <li><a href="/kontaktai">Kontaktai</a></li>
                 </ul>
+
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="hidden message">{{message}}</div>
+        {{content}}
+    </div>
+    <br>
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Footer Content</h5>
+                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
+                        content.</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="footer-copyright">
-        <div class="container">
-            © 2023 Copyright
-            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        <div class="footer-copyright">
+            <div class="container">
+                © 2023 Copyright
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
+</div>
 <script src="/js/mano.js"></script>
 </body>
 </html>

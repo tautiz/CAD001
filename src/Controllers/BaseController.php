@@ -79,16 +79,16 @@ class BaseController
 
     public function show(Request $request): Response
     {
-        $person = $this->manager->getOne($request);
+        $modelArray = $this->manager->getOne($request)->toArray();
 
-        return $this->render(ltrim($request->getUrl(),'/'), $person);
+        return $this->render(ltrim($request->getUrl(),'/'), $modelArray);
     }
 
     public function edit(Request $request): Response
     {
-        $person = $this->manager->getOne($request);
+        $modelArray = $this->manager->getOne($request)->toArray();
 
-        return $this->render(ltrim($request->getUrl(),'/'), $person);
+        return $this->render(ltrim($request->getUrl(),'/'), $modelArray);
     }
 
     public function store(Request $request): Response

@@ -3,6 +3,7 @@
 namespace Appsas;
 
 use Appsas\Exceptions\UnauthenticatedException;
+use Appsas\Models\User;
 use JetBrains\PhpStorm\NoReturn;
 
 class Authenticator
@@ -27,12 +28,14 @@ class Authenticator
         $db = new Database($conf);
 
         $login = $db->query(
-            'SELECT * FROM `user` where `name` = :name AND password = :pass AND state = 2',
-            ['name' => $checkUser, 'pass' => $checkPass]
+            'SELECT * FROM `users` where `name` = :name AND password = :pass AND state = 2',
+            ['name' => $checkUser, 'pass' => $checkPass],
+            User::class
         );
 
         if (!empty($login) && !empty($login[0])) {
             $_SESSION['logged'] = true;
+            $_SESSION['user'] = true;
             $_SESSION['username'] = $checkUser ?? $_SESSION['username'];
             return true;
         }

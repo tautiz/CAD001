@@ -1,0 +1,11 @@
+<h1>User</h1>
+<span>Redagavimo forma</span>
+<form action="/address/update" method="post">
+    <input type="hidden" name="id" value="{{id}}"><br>
+    <input type="text" name="country_iso" placeholder="Valstybės ISO kodas" value="{{country_iso}}"><br>
+    <input type="text" name="city" placeholder="Miestas" value="{{city}}"><br>
+    <input type="email" name="street" placeholder="Gatvė" value="{{street}}"><br>
+    <input type="text" name="postcode" placeholder="Pašto kodas" value="{{postcode}}"><br>
+    <hr>
+    <input type="submit" class="waves-effect waves-light btn" value="Atnaujinti">
+</form>

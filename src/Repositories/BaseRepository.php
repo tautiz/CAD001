@@ -4,17 +4,24 @@ namespace Appsas\Repositories;
 
 use Appsas\Database;
 use Appsas\Exceptions\ForeignKeyException;
+use Appsas\Models\ModelInterface;
 use PDOException;
 use RuntimeException;
 
 class BaseRepository
 {
     protected const TABLE_NAME = null;
+    protected const MODEL_CLASS = 'stdClass';
 
     private array $tableColumnsData;
 
     public function __construct(protected Database $db)
     {
+    }
+
+    public function getDb(): Database
+    {
+        return $this->db;
     }
 
     public function create(array $data): void
@@ -35,14 +42,14 @@ class BaseRepository
         $values = implode(', ', $values);
 
         $sql = "INSERT INTO $tableName ($mergedColumns) VALUES ($values)";
-        $this->db->query($sql, $data);
+        $this->query($sql, $data);
     }
 
-    public function findById(int $id): array
+    public function findById(int $id): ModelInterface
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM $tableName WHERE id = :id";
-        return $this->db->query($sql, ['id' => $id])[0];
+        return $this->query($sql, ['id' => $id])[0];
     }
 
     public function update(array $data): void
@@ -58,7 +65,7 @@ class BaseRepository
         $columns = array_map(fn($value) => "$value = :$value", $columns);
         $columns = implode(', ', $columns);
         $sql = "UPDATE $tableName SET $columns WHERE id = :id";
-        $this->db->query($sql, $data);
+        $this->query($sql, $data);
     }
 
     /**
@@ -69,7 +76,7 @@ class BaseRepository
         try {
             $tableName = $this->getTableName();
             $sql = "DELETE FROM $tableName WHERE id = :id";
-            $this->db->query($sql, ['id' => $id]);
+            $this->query($sql, ['id' => $id]);
         } catch (PDOException $e) {
             if ($e->errorInfo[1] === 1451) {
                 throw new ForeignKeyException(message:'Record is used in other tables', exception: $e);
@@ -83,10 +90,10 @@ class BaseRepository
     public function all(): array
     {
         $tableName = $this->getTableName();
-        return $this->db->query("SELECT * FROM $tableName");
+        return $this->query("SELECT * FROM $tableName");
     }
 
-    protected function getTableName(): string
+    public function getTableName(): string
     {
         return static::TABLE_NAME ?? throw new RuntimeException('Table name not set');
     }
@@ -107,5 +114,18 @@ class BaseRepository
         $primaryKey = array_filter($columnsData, fn($column) => $column['Key'] === 'PRI');
         $primaryKey = array_shift($primaryKey);
         return $primaryKey['Field'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getModelClass(): string
+    {
+        return static::MODEL_CLASS ?? throw new RuntimeException('Model class not set');
+    }
+
+    public function query(string $sql, array $params = []): array
+    {
+        return $this->db->query($sql, $params, $this->getModelClass());
     }
 }

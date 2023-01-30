@@ -37,6 +37,7 @@ try {
     $router = $container->get(Router::class);
     $router->addRoute('GET', '', [$container->get(PradziaController::class), 'index']);
     $router->addRoute('GET', 'admin', [$adminController, 'index']);
+    $router->addRoute('GET', 'login', [$adminController, 'loginPage']);
     $router->addRoute('POST', 'login', [$adminController, 'login']);
     $router->addRoute('GET', 'logout', [$adminController, 'logout']);
     $router->addRoute('GET', 'kontaktai', [$contactsController, 'index']);

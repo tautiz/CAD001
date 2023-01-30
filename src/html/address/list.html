@@ -1,0 +1,32 @@
+<h1>Adresai</h1>
+<hr>
+<div class="content">
+    <div class="row">
+        <div class="col s11">
+            <form action="/address" method="get" class="col s12">
+                <input type="text" name="country_iso" placeholder="ISO">
+                <input type="submit" class="waves-effect waves-light btn" value="Search">
+            </form>
+            <br>
+        </div>
+        <div class="col s1 valign-wrapper" style="display:flex;justify-content:center;align-items:center;">
+            <div class="center-align">
+                <a href="/address/new" class="btn-floating pulse waves-effect waves-light red btn-large"><i
+                        class="tiny material-icons">add</i></a>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col s11">
+            {{pagination}}
+        </div>
+        <div class="col s1 valign-wrapper" style="align-items: stretch;">
+            <a href="/addresss">10</a> |
+            <a href="/addresss?amount=20">20</a> |
+            <a href="/addresss?amount=50">50</a>
+        </div>
+    </div>
+    {{content}}
+    {{pagination}}
+</div>

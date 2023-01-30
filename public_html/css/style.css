@@ -1,3 +1,10 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
 .address_overflow {
     white-space: nowrap;
     width: 150px;
@@ -5,6 +12,35 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .hidden {
     display: none;
+}
+
+img.profile {
+    float: left;
+    padding: 0 10px 10px 0;
+    width: 200px;
+    object-fit: cover;
+}
+
+img.full_fit {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: fixed;
+    z-index: -999999;
+}
+
+.main_grid {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    grid-gap: 10px;
+    padding: 0;
+    margin: 0;
+}
+img.logo {
+    height: 64px;
+    mix-blend-mode: multiply;
 }

@@ -1,0 +1,50 @@
+<tr>
+    <td>{{id}}</td>
+    <td>{{first_name}}</td>
+    <td>{{last_name}}</td>
+    <td>{{email}}</td>
+    <td>{{code}}</td>
+    <td>{{phone}}</td>
+    <td>
+        <sl-tooltip content="{{address}}">
+            <span class="address_overflow">{{address}}</span>
+        </sl-tooltip>
+    </td>
+    <td>
+        <sl-button-group label="Actions">
+            <sl-tooltip content="Peržiūrėti">
+                <sl-button
+                        size="small"
+                        pill
+                        variant="primary"
+                        outline
+                        href="/person/show?id={{id}}"
+                >
+                    <sl-icon name="eye" label="Peržiūrėti"></sl-icon>
+                </sl-button>
+            </sl-tooltip>
+            <sl-tooltip content="Redaguoti">
+                <sl-button
+                        size="small"
+                        pill
+                        variant="success"
+                        outline
+                        href="/person/edit?id={{id}}"
+                >
+                    <sl-icon name="pencil-square" label="Redaguoti"></sl-icon>
+                </sl-button>
+            </sl-tooltip>
+            <sl-tooltip content="Šalinti">
+                <sl-button
+                        size="small"
+                        pill
+                        variant="danger"
+                        outline
+                        href="/person/delete?id={{id}}"
+                >
+                    <sl-icon name="trash" label="Šalinti"></sl-icon>
+                </sl-button>
+            </sl-tooltip>
+        </sl-button-group>
+    </td>
+</tr>

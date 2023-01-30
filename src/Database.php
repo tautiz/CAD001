@@ -21,11 +21,12 @@ class Database
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function query(string $sql, array $params = []): array
+    public function query(string $sql, array $params, $object)
     {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, $object);
     }
 
     public function getTableColumnsData(string $tableName): array

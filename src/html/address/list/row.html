@@ -1,0 +1,44 @@
+<tr>
+    <td>{{id}}</td>
+    <td>{{country_iso}}</td>
+    <td>{{city}}</td>
+    <td>{{street}}</td>
+    <td>{{postcode}}</td>
+    <td>
+        <sl-button-group label="Actions">
+            <sl-tooltip content="Peržiūrėti">
+                <sl-button
+                        size="small"
+                        pill
+                        variant="primary"
+                        outline
+                        href="/address/show?id={{id}}"
+                >
+                    <sl-icon name="eye" label="Peržiūrėti"></sl-icon>
+                </sl-button>
+            </sl-tooltip>
+            <sl-tooltip content="Redaguoti">
+                <sl-button
+                        size="small"
+                        pill
+                        variant="success"
+                        outline
+                        href="/address/edit?id={{id}}"
+                >
+                    <sl-icon name="pencil-square" label="Redaguoti"></sl-icon>
+                </sl-button>
+            </sl-tooltip>
+            <sl-tooltip content="Šalinti">
+                <sl-button
+                        size="small"
+                        pill
+                        variant="danger"
+                        outline
+                        href="/address/delete?id={{id}}"
+                >
+                    <sl-icon name="trash" label="Šalinti"></sl-icon>
+                </sl-button>
+            </sl-tooltip>
+        </sl-button-group>
+    </td>
+</tr>

@@ -45,7 +45,7 @@ class ExceptionHandler
     #[NoReturn] private function handleUnauthenticatedException(UnauthenticatedException $e): void
     {
         $this->log->notice($e->getMessage());
-        header('Location: /?message=Neteisingi prisijungimo duomenys');
+        header('Location: /login?message=Neteisingi prisijungimo duomenys');
         exit;
     }
 

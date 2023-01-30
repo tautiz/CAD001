@@ -29,6 +29,14 @@ class AdminController extends BaseController
     }
 
     /**
+     * @return Response
+     */
+    public function loginPage(): Response
+    {
+        return $this->render('admin/login_form');
+    }
+
+    /**
      * @throws UnauthenticatedException
      */
     public function login(Request $request): Response

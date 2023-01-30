@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col s12 m3">
+        <div class="card">
+            <div class="card-image">
+                <img src="https://picsum.photos/200">
+                <span class="card-title">{{country_iso}}</span>
+            </div>
+            <div class="card-content">
+                <div>ID: {{id}}</div>
+                <div>Varstybės ISO kodas {{country_iso}}</div>
+                <div>Miestas: {{city}}</div>
+                <div>Gatvė: {{street}}</div>
+                <div>Pašto kodas: {{postcode}}</div>
+            </div>
+            <div class="card-action">
+                <a href="/address/edit?id={{id}}"
+                   data-tooltip="Redaguoti"
+                   class="tooltipped waves-effect waves-light green btn-small">
+                    <i class="tiny material-icons">edit</i>
+                </a>
+                <a href="/address/delete?id={{id}}"
+                   data-tooltip="Šalinti"
+                   class="tooltipped waves-effect waves-light red btn-small">
+                    <i class="tiny material-icons">delete</i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
